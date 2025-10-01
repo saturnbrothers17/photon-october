@@ -1,14 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-IN" prefix="og: http://ogp.me/ns#">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- Primary Meta Tags -->
     <title><%= title %></title>
+    <meta name="title" content="<%= title %>">
     <meta name="description" content="<%= description %>">
+    <meta name="keywords" content="IIT JEE coaching Varanasi, NEET coaching Varanasi, best JEE coaching in Varanasi, best NEET coaching in Varanasi, IIT JEE preparation Varanasi, NEET preparation Varanasi, JEE Advanced coaching, JEE Mains coaching, medical entrance coaching, engineering entrance coaching, Photon Coaching, top coaching institute Varanasi, IIT coaching near me, NEET coaching near me">
+    <meta name="author" content="Photon Coaching Institute">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <link rel="canonical" href="https://photoncoaching.in/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://photoncoaching.in/">
+    <meta property="og:title" content="<%= title %>">
+    <meta property="og:description" content="<%= description %>">
+    <meta property="og:image" content="https://photoncoaching.in/images/og-image.jpg">
+    <meta property="og:site_name" content="Photon Coaching Institute">
+    <meta property="og:locale" content="en_IN">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://photoncoaching.in/">
+    <meta property="twitter:title" content="<%= title %>">
+    <meta property="twitter:description" content="<%= description %>">
+    <meta property="twitter:image" content="https://photoncoaching.in/images/og-image.jpg">
+    
+    <!-- Geo Tags -->
+    <meta name="geo.region" content="IN-UP">
+    <meta name="geo.placename" content="Varanasi">
+    <meta name="geo.position" content="25.3176;82.9739">
+    <meta name="ICBM" content="25.3176, 82.9739">
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
     <link rel="alternate icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/favicon.svg">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -284,6 +317,169 @@
             opacity: 1;
         }
     </style>
+    
+    <!-- Schema.org Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "EducationalOrganization",
+                "@id": "https://photoncoaching.in/#organization",
+                "name": "Photon Coaching Institute",
+                "url": "https://photoncoaching.in",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://photoncoaching.in/images/logo.svg"
+                },
+                "description": "Top-ranked IIT JEE and NEET coaching institute in Varanasi with expert faculty and proven results",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Varanasi",
+                    "addressRegion": "Uttar Pradesh",
+                    "addressCountry": "IN"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": "25.3176",
+                    "longitude": "82.9739"
+                },
+                "telephone": "+91-9876543210",
+                "email": "info@photoncoaching.in",
+                "sameAs": [
+                    "https://facebook.com/photoncoaching",
+                    "https://twitter.com/photoncoaching",
+                    "https://instagram.com/photoncoaching",
+                    "https://youtube.com/@photoncoaching"
+                ],
+                "areaServed": {
+                    "@type": "City",
+                    "name": "Varanasi"
+                },
+                "hasOfferCatalog": {
+                    "@type": "OfferCatalog",
+                    "name": "Coaching Programs",
+                    "itemListElement": [
+                        {
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Course",
+                                "name": "IIT JEE Advanced Coaching",
+                                "description": "Comprehensive coaching for IIT JEE Advanced examination",
+                                "provider": {
+                                    "@type": "EducationalOrganization",
+                                    "name": "Photon Coaching Institute"
+                                }
+                            }
+                        },
+                        {
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Course",
+                                "name": "JEE Mains Coaching",
+                                "description": "Complete preparation for JEE Mains examination",
+                                "provider": {
+                                    "@type": "EducationalOrganization",
+                                    "name": "Photon Coaching Institute"
+                                }
+                            }
+                        },
+                        {
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Course",
+                                "name": "NEET Coaching",
+                                "description": "Expert coaching for NEET medical entrance examination",
+                                "provider": {
+                                    "@type": "EducationalOrganization",
+                                    "name": "Photon Coaching Institute"
+                                }
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "@type": "WebSite",
+                "@id": "https://photoncoaching.in/#website",
+                "url": "https://photoncoaching.in",
+                "name": "Photon Coaching Institute",
+                "description": "Best IIT JEE and NEET Coaching in Varanasi",
+                "publisher": {
+                    "@id": "https://photoncoaching.in/#organization"
+                },
+                "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "https://photoncoaching.in/search?q={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                }
+            },
+            {
+                "@type": "WebPage",
+                "@id": "https://photoncoaching.in/#webpage",
+                "url": "https://photoncoaching.in",
+                "name": "Photon Coaching - Best IIT JEE & NEET Coaching in Varanasi",
+                "isPartOf": {
+                    "@id": "https://photoncoaching.in/#website"
+                },
+                "about": {
+                    "@id": "https://photoncoaching.in/#organization"
+                },
+                "description": "Top-ranked IIT JEE and NEET coaching institute in Varanasi. Expert faculty, proven results, personalized attention.",
+                "breadcrumb": {
+                    "@id": "https://photoncoaching.in/#breadcrumb"
+                }
+            },
+            {
+                "@type": "BreadcrumbList",
+                "@id": "https://photoncoaching.in/#breadcrumb",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://photoncoaching.in"
+                    }
+                ]
+            },
+            {
+                "@type": "LocalBusiness",
+                "@id": "https://photoncoaching.in/#localbusiness",
+                "name": "Photon Coaching Institute",
+                "image": "https://photoncoaching.in/images/logo.svg",
+                "priceRange": "₹₹",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Varanasi",
+                    "addressRegion": "UP",
+                    "addressCountry": "IN"
+                },
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": 25.3176,
+                    "longitude": 82.9739
+                },
+                "url": "https://photoncoaching.in",
+                "telephone": "+91-9876543210",
+                "openingHoursSpecification": [
+                    {
+                        "@type": "OpeningHoursSpecification",
+                        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                        "opens": "08:00",
+                        "closes": "20:00"
+                    }
+                ],
+                "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": "4.9",
+                    "reviewCount": "150",
+                    "bestRating": "5",
+                    "worstRating": "1"
+                }
+            }
+        ]
+    }
+    </script>
 </head>
 <body class="bg-slate-900 text-white">
     <!-- Scroll Progress Bar -->
@@ -423,21 +619,21 @@
                         </div>
                         
                         <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
-                            Unlock Your <br>
-                            <span class="gradient-text">Potential</span> with<br>
-                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">PHOTON</span>
+                            Best <span class="gradient-text">IIT JEE</span> & <br>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">NEET Coaching</span><br>
+                            in Varanasi
                         </h1>
                         
-                        <p class="text-xl md:text-2xl text-gray-300 mb-4 font-medium">
-                            Varanasi's Premier Institute for
-                        </p>
+                        <h2 class="text-xl md:text-2xl text-gray-300 mb-4 font-medium">
+                            Top-Ranked Coaching Institute for JEE Advanced, JEE Mains & NEET
+                        </h2>
                         
-                        <div class="text-3xl md:text-4xl font-bold mb-8">
-                            <span class="text-blue-400">JEE</span> & <span class="text-purple-400">NEET</span> Preparation
+                        <div class="text-2xl md:text-3xl font-bold mb-8 text-blue-300">
+                            Expert Faculty | Proven Results | Personalized Attention
                         </div>
                         
                         <p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto lg:mx-0">
-                            Join thousands of successful students who transformed their dreams into reality with our expert guidance and proven results.
+                            Join Photon Coaching Institute - Varanasi's most trusted name for IIT JEE and NEET preparation. Transform your dreams into reality with our expert guidance, comprehensive study materials, and proven track record of success.
                         </p>
                         
                         <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
