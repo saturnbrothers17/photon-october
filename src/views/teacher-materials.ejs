@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        * { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #0f172a; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Space Grotesk', sans-serif; }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glow { box-shadow: 0 0 20px rgba(96, 165, 250, 0.5), 0 0 40px rgba(96, 165, 250, 0.3); }
+        
+        .file-upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload-area:hover {
+            border-color: rgba(96, 165, 250, 0.5);
+            background: rgba(96, 165, 250, 0.05);
+        }
+        
+        .file-upload-area.drag-over {
+            border-color: #60a5fa;
+            background: rgba(96, 165, 250, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white">
+    <div class="min-h-screen pt-24 pb-12 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <!-- Header -->
+            <div class="mb-12" data-aos="fade-up">
+                <a href="/teacher-dashboard" class="inline-flex items-center text-blue-400 hover:text-blue-300 mb-6 transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+                </a>
+                <h1 class="text-4xl md:text-5xl font-black mb-4">
+                    Study <span class="gradient-text">Materials</span>
+                </h1>
+                <p class="text-gray-400 text-lg">Upload and manage study materials for students</p>
+            </div>
+
+            <!-- Upload Section -->
+            <div class="glass rounded-3xl p-8 mb-8" data-aos="fade-up">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-cloud-upload-alt text-blue-400 mr-3"></i>
+                    Upload New Material
+                </h2>
+                
+                <form action="/teacher-dashboard/materials/upload" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Title -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">
+                                <i class="fas fa-heading text-blue-400 mr-2"></i>Title
+                            </label>
+                            <input 
+                                type="text" 
+                                name="title" 
+                                required 
+                                class="w-full px-4 py-3 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-all"
+                                placeholder="e.g., Physics Chapter 1 Notes"
+                            >
+                        </div>
+                        
+                        <!-- Subject -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-300 mb-2">
+                                <i class="fas fa-book text-purple-400 mr-2"></i>Subject
+                            </label>
+                            <select 
+                                name="subject" 
+                                required 
+                                class="w-full px-4 py-3 bg-white/5 border-2 border-white/10 rounded-xl text-white focus:outline-none focus:border-purple-500 transition-all"
+                            >
+                                <option value="" class="bg-slate-800">Select Subject</option>
+                                <option value="Physics" class="bg-slate-800">Physics</option>
+                                <option value="Chemistry" class="bg-slate-800">Chemistry</option>
+                                <option value="Mathematics" class="bg-slate-800">Mathematics</option>
+                                <option value="Biology" class="bg-slate-800">Biology</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Description -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">
+                            <i class="fas fa-align-left text-green-400 mr-2"></i>Description
+                        </label>
+                        <textarea 
+                            name="description" 
+                            rows="3" 
+                            class="w-full px-4 py-3 bg-white/5 border-2 border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-green-500 transition-all"
+                            placeholder="Brief description of the material..."
+                        ></textarea>
+                    </div>
+                    
+                    <!-- File Upload -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-300 mb-2">
+                            <i class="fas fa-file-upload text-orange-400 mr-2"></i>Upload File (Max 50MB)
+                        </label>
+                        <div class="file-upload-area rounded-xl p-8 text-center">
+                            <input 
+                                type="file" 
+                                name="material" 
+                                id="fileInput"
+                                accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png"
+                                required 
+                                class="hidden"
+                            >
+                            <label for="fileInput" class="cursor-pointer">
+                                <i class="fas fa-cloud-upload-alt text-6xl text-blue-400 mb-4 block"></i>
+                                <p class="text-lg font-semibold mb-2">Click to upload or drag and drop</p>
+                                <p class="text-sm text-gray-400">PDF, Word, PowerPoint, or Images (Max 50MB)</p>
+                                <p id="fileName" class="text-sm text-green-400 mt-4 hidden"></p>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit" 
+                        class="w-full py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 glow"
+                    >
+                        <i class="fas fa-upload mr-2"></i> Upload Material
+                    </button>
+                </form>
+            </div>
+
+            <!-- Success Message -->
+            <% if (locals.success) { %>
+            <div class="bg-green-500/10 border border-green-500/30 text-green-400 px-6 py-4 rounded-xl mb-8 flex items-center" data-aos="fade-down">
+                <i class="fas fa-check-circle mr-3 text-2xl"></i>
+                <span class="font-semibold"><%= success %></span>
+            </div>
+            <% } %>
+
+            <!-- Uploaded Materials List -->
+            <div class="glass rounded-3xl p-8" data-aos="fade-up" data-aos-delay="200">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-list text-green-400 mr-3"></i>
+                    Uploaded Materials
+                </h2>
+                
+                <div class="space-y-4">
+                    <% if (locals.materials && materials.length > 0) { %>
+                        <% materials.forEach(material => { %>
+                        <div class="bg-white/5 rounded-xl p-6 border border-white/10 hover:border-blue-500/50 transition-all">
+                            <div class="flex items-center justify-between flex-wrap gap-4">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                                        <% if (material.file_type === '.pdf') { %>
+                                            <i class="fas fa-file-pdf text-red-400 text-xl"></i>
+                                        <% } else if (material.file_type === '.doc' || material.file_type === '.docx') { %>
+                                            <i class="fas fa-file-word text-blue-400 text-xl"></i>
+                                        <% } else if (material.file_type === '.ppt' || material.file_type === '.pptx') { %>
+                                            <i class="fas fa-file-powerpoint text-orange-400 text-xl"></i>
+                                        <% } else { %>
+                                            <i class="fas fa-file-image text-green-400 text-xl"></i>
+                                        <% } %>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-lg"><%= material.title %></h3>
+                                        <p class="text-sm text-gray-400">
+                                            <%= material.subject %> • 
+                                            <%= new Date(material.created_at).toLocaleDateString() %> • 
+                                            <%= (material.file_size / (1024 * 1024)).toFixed(2) %> MB
+                                        </p>
+                                        <% if (material.description) { %>
+                                        <p class="text-sm text-gray-500 mt-1"><%= material.description %></p>
+                                        <% } %>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <a href="<%= material.file_path %>" download class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">
+                                        <i class="fas fa-download mr-2"></i> Download
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <% }); %>
+                    <% } else { %>
+                    <!-- Empty State -->
+                    <div class="text-center py-12 text-gray-500">
+                        <i class="fas fa-folder-open text-6xl mb-4 opacity-50"></i>
+                        <p class="text-lg">No materials uploaded yet</p>
+                        <p class="text-sm">Upload your first study material above</p>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true });
+        
+        // File upload handling
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+        const uploadArea = document.querySelector('.file-upload-area');
+        
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                fileName.textContent = `Selected: ${file.name} (${sizeMB} MB)`;
+                fileName.classList.remove('hidden');
+                
+                if (file.size > 50 * 1024 * 1024) {
+                    alert('File size exceeds 50MB limit!');
+                    fileInput.value = '';
+                    fileName.classList.add('hidden');
+                }
+            }
+        });
+        
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('drag-over');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                fileInput.dispatchEvent(new Event('change'));
+            }
+        });
+    </script>
+</body>
+</html>

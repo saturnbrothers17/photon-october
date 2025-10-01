@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= locals.title || 'Our Courses - Photon Coaching' %></title>
+    <meta name="description" content="<%= locals.description || 'Explore our comprehensive courses for JEE and NEET preparation.' %>">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4">
+            <nav class="navbar flex items-center justify-between py-4">
+                <a class="navbar-brand flex items-center" href="/">
+                    <img src="/images/logo.svg" alt="Photon Coaching Logo" class="h-12">
+                </a>
+                <div class="hidden md:flex space-x-6">
+                    <a class="nav-link hover:text-blue-600" href="/">Home</a>
+                    <a class="nav-link hover:text-blue-600" href="/courses">Courses</a>
+                    <a class="nav-link hover:text-blue-600" href="/student-corner">Student Corner</a>
+                    <a class="nav-link hover:text-blue-600" href="/teacher-dashboard">Faculty Dashboard</a>
+                    <a class="nav-link hover:text-blue-600" href="/contact">Contact</a>
+                </div>
+                <button class="md:hidden text-gray-500">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container mx-auto px-4 py-12">
+            <div class="text-center mb-12">
+                <h1 class="text-3xl md:text-4xl font-bold mb-4">Our Coaching Courses</h1>
+                <p class="text-xl text-gray-600">Tailored for Success in JEE & NEET</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- JEE Advanced Course -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="bg-blue-600 text-white p-6">
+                        <h2 class="text-2xl font-bold">JEE Coaching (Advanced)</h2>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-700 mb-6">A comprehensive program designed to tackle the toughest problems in the JEE Advanced syllabus for engineering aspirants in Varanasi.</p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Comprehensive coverage of Physics, Chemistry, Mathematics
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Regular mock tests and performance analysis
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Doubt clearing sessions with expert faculty
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Study material and practice books
+                            </li>
+                        </ul>
+                        <a href="/contact" class="btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full text-center block">
+                            Enroll Now
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- NEET Course -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="bg-green-600 text-white p-6">
+                        <h2 class="text-2xl font-bold">NEET Coaching for Medical</h2>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-700 mb-6">In-depth coverage of the complete NEET Biology, Physics, and Chemistry syllabus with a focus on conceptual understanding.</p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Detailed Biology with special focus on NCERT
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Physics and Chemistry problem-solving techniques
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Regular mock tests and performance analysis
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Study material and practice books
+                            </li>
+                        </ul>
+                        <a href="/contact" class="btn bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full text-center block">
+                            Enroll Now
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Foundation Course -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="bg-purple-600 text-white p-6">
+                        <h2 class="text-2xl font-bold">Foundation Course (Class IX & X)</h2>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-700 mb-6">Build a strong base in Science and Mathematics to excel in future competitive exams right here in Varanasi.</p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Strong foundation in Science and Mathematics
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Introduction to competitive exam patterns
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Regular assessments and progress tracking
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                Study material and practice worksheets
+                            </li>
+                        </ul>
+                        <a href="/contact" class="btn bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded w-full text-center block">
+                            Enroll Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Course Features -->
+            <div class="mt-16">
+                <h2 class="text-3xl font-bold text-center mb-8">Why Our Courses Work</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                        <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-chalkboard-teacher text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Expert Faculty</h3>
+                        <p class="text-gray-700">Learn from IITians and Doctors with years of teaching experience</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                        <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-book-open text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Comprehensive Study Material</h3>
+                        <p class="text-gray-700">Well-researched and regularly updated study material</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                        <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-chart-line text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Regular Assessments</h3>
+                        <p class="text-gray-700">Weekly tests and detailed performance analysis</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                        <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-headset text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Doubt Support</h3>
+                        <p class="text-gray-700">24/7 doubt clearing support for all subjects</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Photon Coaching</h3>
+                    <p>Best IIT JEE & NEET Coaching Institute in Varanasi</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="hover:text-blue-300">Home</a></li>
+                        <li><a href="/courses" class="hover:text-blue-300">Courses</a></li>
+                        <li><a href="/student-corner" class="hover:text-blue-300">Student Corner</a></li>
+                        <li><a href="/teacher-dashboard" class="hover:text-blue-300">Faculty Dashboard</a></li>
+                        <li><a href="/contact" class="hover:text-blue-300">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact Us</h3>
+                    <p><i class="fas fa-phone mr-2"></i> +91 9450545318</p>
+                    <p><i class="fas fa-envelope mr-2"></i> info@photoncoaching.in</p>
+                    <p><i class="fas fa-map-marker-alt mr-2"></i> Varanasi, Uttar Pradesh</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center">
+                <p>&copy; 2025 Photon Coaching. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/js/main.js"></script>
+</body>
+</html>

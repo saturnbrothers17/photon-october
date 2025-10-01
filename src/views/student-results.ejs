@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        * { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #0f172a; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Space Grotesk', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white">
+    <div class="min-h-screen pt-24 pb-12 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <!-- Header -->
+            <div class="mb-12 text-center" data-aos="fade-up">
+                <a href="/student-corner" class="inline-flex items-center text-blue-400 hover:text-blue-300 mb-6">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+                </a>
+                <h1 class="text-4xl md:text-5xl font-black mb-4">
+                    Test <span class="gradient-text">Results</span>
+                </h1>
+                <p class="text-gray-400 text-lg">View your performance and rankings</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <% 
+                const avgScore = results.length > 0 ? (results.reduce((sum, r) => sum + r.score, 0) / results.length).toFixed(1) : 0;
+                const testsCompleted = results.length;
+            %>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="glass rounded-2xl p-6 text-center" data-aos="fade-up">
+                    <div class="text-4xl font-black text-blue-400 mb-2"><%= avgScore %>%</div>
+                    <div class="text-gray-400">Average Score</div>
+                </div>
+                <div class="glass rounded-2xl p-6 text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-4xl font-black text-green-400 mb-2"><%= testsCompleted %></div>
+                    <div class="text-gray-400">Tests Completed</div>
+                </div>
+                <div class="glass rounded-2xl p-6 text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-4xl font-black text-purple-400 mb-2">
+                        <%= results.length > 0 ? results[0].score.toFixed(1) : 0 %>%
+                    </div>
+                    <div class="text-gray-400">Latest Score</div>
+                </div>
+            </div>
+
+            <!-- Results List -->
+            <div class="space-y-4">
+                <% if (results && results.length > 0) { %>
+                    <% results.forEach((result, index) => { %>
+                        <div class="glass rounded-2xl p-6" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-bold mb-2"><%= result.title %></h3>
+                                    <p class="text-gray-400">
+                                        <i class="fas fa-book mr-2"></i><%= result.subject %> • 
+                                        <i class="fas fa-calendar ml-3 mr-2"></i><%= new Date(result.submitted_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %>
+                                    </p>
+                                    <p class="text-sm text-gray-500 mt-1">
+                                        <%= result.correct_answers %>/<%= result.total_questions %> correct
+                                    </p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-3xl font-bold <%= result.score >= 75 ? 'text-green-400' : result.score >= 50 ? 'text-yellow-400' : 'text-red-400' %>">
+                                        <%= result.score.toFixed(1) %>%
+                                    </div>
+                                    <a href="/student-corner/results/<%= result.id %>" class="mt-2 inline-block px-4 py-2 bg-blue-600 rounded-lg text-sm font-bold hover:bg-blue-700 transition-all">
+                                        <i class="fas fa-eye mr-2"></i> View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="glass rounded-2xl p-12 text-center" data-aos="fade-up">
+                        <i class="fas fa-clipboard-list text-6xl text-gray-600 mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">No Results Yet</h3>
+                        <p class="text-gray-400 mb-6">You haven't completed any tests yet. Start taking tests to see your results here!</p>
+                        <a href="/student-corner/tests" class="inline-block px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl font-bold hover:scale-105 transition-all">
+                            <i class="fas fa-play mr-2"></i> Take a Test
+                        </a>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true });
+    </script>
+</body>
+</html>

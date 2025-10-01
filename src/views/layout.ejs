@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4">
+            <nav class="navbar flex items-center justify-between py-4">
+                <a class="navbar-brand flex items-center" href="/">
+                    <img src="/images/logo.svg" alt="Photon Coaching Logo" class="h-12">
+                </a>
+                <div class="hidden md:flex space-x-6">
+                    <a class="nav-link hover:text-blue-600" href="/">Home</a>
+                    <a class="nav-link hover:text-blue-600" href="/courses">Courses</a>
+                    <a class="nav-link hover:text-blue-600" href="/student-corner">Student Corner</a>
+                    <a class="nav-link hover:text-blue-600" href="/teacher-dashboard">Faculty Dashboard</a>
+                    <a class="nav-link hover:text-blue-600" href="/contact">Contact</a>
+                    <% if (typeof user !== 'undefined' && user) { %>
+                        <a class="nav-link hover:text-blue-600" href="/auth/logout">Logout</a>
+                    <% } else { %>
+                        <a class="nav-link hover:text-blue-600" href="/auth/login">Login</a>
+                    <% } %>
+                </div>
+                <button class="md:hidden text-gray-500">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <%- body %>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Photon Coaching</h3>
+                    <p>Best IIT JEE & NEET Coaching Institute in Varanasi</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="hover:text-blue-300">Home</a></li>
+                        <li><a href="/courses" class="hover:text-blue-300">Courses</a></li>
+                        <li><a href="/student-corner" class="hover:text-blue-300">Student Corner</a></li>
+                        <li><a href="/teacher-dashboard" class="hover:text-blue-300">Faculty Dashboard</a></li>
+                        <li><a href="/contact" class="hover:text-blue-300">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact Us</h3>
+                    <p><i class="fas fa-phone mr-2"></i> +91 9450545318</p>
+                    <p><i class="fas fa-envelope mr-2"></i> info@photoncoaching.in</p>
+                    <p><i class="fas fa-map-marker-alt mr-2"></i> Varanasi, Uttar Pradesh</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center">
+                <p>&copy; 2025 Photon Coaching. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/js/main.js"></script>
+</body>
+</html>

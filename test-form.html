@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Registration Form</title>
+</head>
+<body>
+    <h1>Test Registration Form</h1>
+    <form action="http://localhost:7000/auth/register" method="POST">
+        <div>
+            <label for="photon_id">Photon ID:</label>
+            <input type="text" id="photon_id" name="photon_id" required>
+        </div>
+        <div>
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
+        </div>
+        <div>
+            <label for="class">Class:</label>
+            <input type="text" id="class" name="class" required>
+        </div>
+        <div>
+            <label for="course">Course:</label>
+            <select id="course" name="course" required>
+                <option value="">Select Course</option>
+                <option value="JEE Main + Advanced">JEE Main + Advanced</option>
+                <option value="NEET-UG">NEET-UG</option>
+                <option value="Foundation Course (9th & 10th)">Foundation Course (9th & 10th)</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="password">Photon Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <label for="confirmPassword">Confirm Photon Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+        </div>
+        <div>
+            <button type="submit">Register</button>
+        </div>
+    </form>
+</body>
+</html>

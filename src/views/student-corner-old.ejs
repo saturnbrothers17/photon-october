@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= locals.title || 'Student Corner - Photon Coaching' %></title>
+    <meta name="description" content="<%= locals.description || 'Access study materials, test results, and other resources for your preparation.' %>">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link href="/css/style.css" rel="stylesheet">
+    
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+        
+        .modal-form {
+            margin-top: 20px;
+        }
+        
+        .modal-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        
+        .modal-form button {
+            width: 100%;
+            padding: 12px;
+            background-color: #1e40af;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .modal-form button:hover {
+            background-color: #2563eb;
+        }
+        
+        .auth-links {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .auth-links a {
+            color: #1e40af;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4">
+            <nav class="navbar flex items-center justify-between py-4">
+                <a class="navbar-brand flex items-center" href="/">
+                    <img src="/images/logo.svg" alt="Photon Coaching Logo" class="h-12">
+                </a>
+                <div class="hidden md:flex space-x-6">
+                    <a class="nav-link hover:text-blue-600" href="/">Home</a>
+                    <a class="nav-link hover:text-blue-600" href="/courses">Courses</a>
+                    <a class="nav-link hover:text-blue-600" href="/student-corner">Student Corner</a>
+                    <a class="nav-link hover:text-blue-600" href="/teacher-dashboard">Faculty Dashboard</a>
+                    <a class="nav-link hover:text-blue-600" href="/contact">Contact</a>
+                </div>
+                <button class="md:hidden text-gray-500">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container mx-auto px-4 py-12">
+            <div class="text-center mb-12">
+                <h1 class="text-3xl md:text-4xl font-bold mb-4">Student Corner</h1>
+                <p class="text-xl text-gray-600">Everything you need for your preparation journey</p>
+            </div>
+            
+            <% if (locals.showLoginPopup) { %>
+            <!-- Login Popup Modal -->
+            <div id="loginModal" class="modal" style="display: block;">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2 class="text-2xl font-bold text-center mb-4">Access Student Resources</h2>
+                    <p class="text-center text-gray-600 mb-6">Please login to access student resources</p>
+                    
+                    <form class="modal-form" action="/auth/login" method="POST">
+                        <input type="text" name="photon_id" placeholder="Photon ID" required>
+                        <input type="password" name="password" placeholder="Photon Password" required>
+                        <button type="submit">Login</button>
+                    </form>
+                    
+                    <div class="auth-links">
+                        <a href="/auth/register">Create Account</a> | 
+                        <a href="/auth/login">Full Login Page</a>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+            
+            <!-- Student Resources Content -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Study Materials -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-book text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Study Materials</h3>
+                    <p class="text-gray-700 mb-4">Comprehensive notes and resources for all subjects</p>
+                    <ul class="space-y-2 mb-4">
+                        <li class="flex items-center">
+                            <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                            Physics Notes
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                            Chemistry Notes
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                            Mathematics Notes
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                            Biology Notes
+                        </li>
+                    </ul>
+                    <a href="#" class="btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-block">
+                        Download Materials
+                    </a>
+                </div>
+                
+                <!-- Test Results -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-bar text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Test Results</h3>
+                    <p class="text-gray-700 mb-4">Check your PST and mock test performance</p>
+                    <ul class="space-y-2 mb-4">
+                        <li class="flex items-center">
+                            <i class="fas fa-file-alt text-blue-500 mr-2"></i>
+                            Weekly Test Results
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-file-alt text-blue-500 mr-2"></i>
+                            Monthly Test Results
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-file-alt text-blue-500 mr-2"></i>
+                            All India Rank
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-file-alt text-blue-500 mr-2"></i>
+                            Performance Analysis
+                        </li>
+                    </ul>
+                    <a href="#" class="btn bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded inline-block">
+                        View Results
+                    </a>
+                </div>
+                
+                <!-- Class Schedule -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-calendar-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Class Schedule</h3>
+                    <p class="text-gray-700 mb-4">View your timetable and class updates</p>
+                    <ul class="space-y-2 mb-4">
+                        <li class="flex items-center">
+                            <i class="fas fa-clock text-yellow-500 mr-2"></i>
+                            Weekly Timetable
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-sync text-yellow-500 mr-2"></i>
+                            Class Updates
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-bell text-yellow-500 mr-2"></i>
+                            Important Announcements
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>
+                            Exam Notifications
+                        </li>
+                    </ul>
+                    <a href="#" class="btn bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded inline-block">
+                        View Schedule
+                    </a>
+                </div>
+                
+                <!-- Student Support -->
+                <div class="bg-white rounded-lg shadow-md p-6 md:col-span-2 lg:col-span-3">
+                    <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-headset text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Student Support</h3>
+                    <p class="text-gray-700 mb-4">Get help and support from our team</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-bold mb-2">Academic Support</h4>
+                            <p>Doubt clearing sessions and academic guidance</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-bold mb-2">Technical Support</h4>
+                            <p>Help with online classes and digital resources</p>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h4 class="font-bold mb-2">Counseling</h4>
+                            <p>Career guidance and stress management</p>
+                        </div>
+                    </div>
+                    <a href="/contact" class="btn bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded inline-block mt-4">
+                        Contact Support Team
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Photon Coaching</h3>
+                    <p>Best IIT JEE & NEET Coaching Institute in Varanasi</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="hover:text-blue-300">Home</a></li>
+                        <li><a href="/courses" class="hover:text-blue-300">Courses</a></li>
+                        <li><a href="/student-corner" class="hover:text-blue-300">Student Corner</a></li>
+                        <li><a href="/teacher-dashboard" class="hover:text-blue-300">Faculty Dashboard</a></li>
+                        <li><a href="/contact" class="hover:text-blue-300">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact Us</h3>
+                    <p><i class="fas fa-phone mr-2"></i> +91 9450545318</p>
+                    <p><i class="fas fa-envelope mr-2"></i> info@photoncoaching.in</p>
+                    <p><i class="fas fa-map-marker-alt mr-2"></i> Varanasi, Uttar Pradesh</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center">
+                <p>&copy; 2025 Photon Coaching. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/js/main.js"></script>
+    
+    <script>
+        // Modal functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('loginModal');
+            const closeBtn = document.querySelector('.close');
+            
+            // Only show the modal if it exists (when user is not logged in)
+            if (modal) {
+                modal.style.display = 'block';
+                
+                // Close modal when clicking on the close button
+                if (closeBtn) {
+                    closeBtn.onclick = function() {
+                        modal.style.display = 'none';
+                    }
+                }
+                
+                // Close modal when clicking outside of it
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = 'none';
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

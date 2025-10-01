@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        * { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #0f172a; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Space Grotesk', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow { box-shadow: 0 0 20px rgba(96, 165, 250, 0.5), 0 0 40px rgba(96, 165, 250, 0.3); }
+    </style>
+</head>
+<body class="bg-slate-900 text-white">
+    <div class="min-h-screen pt-24 pb-12 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <!-- Header -->
+            <div class="mb-12 text-center" data-aos="fade-up">
+                <a href="/student-corner" class="inline-flex items-center text-blue-400 hover:text-blue-300 mb-6">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+                </a>
+                <h1 class="text-4xl md:text-5xl font-black mb-4">
+                    Study <span class="gradient-text">Materials</span>
+                </h1>
+                <p class="text-gray-400 text-lg">Download comprehensive notes and resources</p>
+            </div>
+
+            <!-- Materials Grid -->
+            <div class="space-y-4">
+                <% if (locals.materials && materials.length > 0) { %>
+                    <% materials.forEach((material, index) => { %>
+                    <div class="glass rounded-2xl p-6 hover:border-blue-500/50 border border-white/10 transition-all" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+                        <div class="flex items-center justify-between flex-wrap gap-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-14 h-14 rounded-xl flex items-center justify-center
+                                    <% if (material.subject === 'Physics') { %>
+                                        bg-blue-500/20
+                                    <% } else if (material.subject === 'Chemistry') { %>
+                                        bg-green-500/20
+                                    <% } else if (material.subject === 'Mathematics') { %>
+                                        bg-purple-500/20
+                                    <% } else if (material.subject === 'Biology') { %>
+                                        bg-pink-500/20
+                                    <% } else { %>
+                                        bg-gray-500/20
+                                    <% } %>
+                                ">
+                                    <% if (material.file_type === '.pdf') { %>
+                                        <i class="fas fa-file-pdf text-red-400 text-2xl"></i>
+                                    <% } else if (material.file_type === '.doc' || material.file_type === '.docx') { %>
+                                        <i class="fas fa-file-word text-blue-400 text-2xl"></i>
+                                    <% } else if (material.file_type === '.ppt' || material.file_type === '.pptx') { %>
+                                        <i class="fas fa-file-powerpoint text-orange-400 text-2xl"></i>
+                                    <% } else { %>
+                                        <i class="fas fa-file-image text-green-400 text-2xl"></i>
+                                    <% } %>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold mb-1"><%= material.title %></h3>
+                                    <p class="text-sm text-gray-400 mb-1">
+                                        <span class="
+                                            <% if (material.subject === 'Physics') { %>
+                                                text-blue-400
+                                            <% } else if (material.subject === 'Chemistry') { %>
+                                                text-green-400
+                                            <% } else if (material.subject === 'Mathematics') { %>
+                                                text-purple-400
+                                            <% } else if (material.subject === 'Biology') { %>
+                                                text-pink-400
+                                            <% } %>
+                                        "><i class="fas fa-book mr-1"></i><%= material.subject %></span>
+                                        <span class="text-gray-600 mx-2">•</span>
+                                        <%= (material.file_size / (1024 * 1024)).toFixed(2) %> MB
+                                        <span class="text-gray-600 mx-2">•</span>
+                                        <%= new Date(material.created_at).toLocaleDateString() %>
+                                    </p>
+                                    <% if (material.description) { %>
+                                    <p class="text-sm text-gray-500"><%= material.description %></p>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <a href="<%= material.file_path %>" download class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl font-bold hover:scale-105 transition-all whitespace-nowrap">
+                                <i class="fas fa-download mr-2"></i> Download
+                            </a>
+                        </div>
+                    </div>
+                    <% }); %>
+                <% } else { %>
+                <!-- Empty State -->
+                <div class="glass rounded-2xl p-12 text-center" data-aos="fade-up">
+                    <i class="fas fa-folder-open text-6xl text-gray-600 mb-4"></i>
+                    <h3 class="text-2xl font-bold mb-2">No Materials Available Yet</h3>
+                    <p class="text-gray-400">Study materials will appear here once uploaded by faculty</p>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true });
+    </script>
+</body>
+</html>

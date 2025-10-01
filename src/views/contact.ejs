@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= locals.title || 'Contact Us - Photon Coaching' %></title>
+    <meta name="description" content="<%= locals.description || 'Get in touch with us for admissions and other queries.' %>">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-4">
+            <nav class="navbar flex items-center justify-between py-4">
+                <a class="navbar-brand flex items-center" href="/">
+                    <img src="/images/logo.svg" alt="Photon Coaching Logo" class="h-12">
+                </a>
+                <div class="hidden md:flex space-x-6">
+                    <a class="nav-link hover:text-blue-600" href="/">Home</a>
+                    <a class="nav-link hover:text-blue-600" href="/courses">Courses</a>
+                    <a class="nav-link hover:text-blue-600" href="/student-corner">Student Corner</a>
+                    <a class="nav-link hover:text-blue-600" href="/teacher-dashboard">Faculty Dashboard</a>
+                    <a class="nav-link hover:text-blue-600" href="/contact">Contact</a>
+                </div>
+                <button class="md:hidden text-gray-500">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container mx-auto px-4 py-12">
+            <div class="text-center mb-12">
+                <h1 class="text-3xl md:text-4xl font-bold mb-4">Contact Us</h1>
+                <p class="text-xl text-gray-600">Get in touch with us for admissions and other queries</p>
+            </div>
+            
+            <% if (locals.message) { %>
+                <div class="mb-8 p-4 rounded-lg <% if (locals.messageType === 'success') { %>bg-green-100 text-green-800<% } else { %>bg-red-100 text-red-800<% } %>">
+                    <%= message %>
+                </div>
+            <% } %>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Contact Information -->
+                <div>
+                    <h2 class="text-2xl font-bold mb-6">Get in Touch</h2>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-map-marker-alt text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-1">Our Location</h3>
+                                <p class="text-gray-700">Photon Coaching Institute<br>Varanasi, Uttar Pradesh<br>India</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-phone-alt text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-1">Phone Number</h3>
+                                <p class="text-gray-700"><a href="tel:9450545318" class="hover:text-blue-600">+91 9450545318</a></p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-envelope text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-1">Email Address</h3>
+                                <p class="text-gray-700"><a href="mailto:info@photoncoaching.in" class="hover:text-blue-600">info@photoncoaching.in</a></p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-clock text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-1">Working Hours</h3>
+                                <p class="text-gray-700">Monday - Saturday: 8:00 AM - 8:00 PM<br>Sunday: 9:00 AM - 5:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Map -->
+                    <div class="mt-12">
+                        <h3 class="text-xl font-semibold mb-4">Find Us on Map</h3>
+                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-64 flex items-center justify-center">
+                            <p class="text-gray-500">Interactive Map Placeholder</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div>
+                    <h2 class="text-2xl font-bold mb-6">Send us a Message</h2>
+                    
+                    <form class="bg-white rounded-lg shadow-md p-6" method="POST">
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 font-medium mb-2">Full Name</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your full name" required>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Email Address</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your email address" required>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="phone" class="block text-gray-700 font-medium mb-2">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your phone number" required>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="course" class="block text-gray-700 font-medium mb-2">Course Interested In</label>
+                            <select id="course" name="course" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                                <option value="">Select a course</option>
+                                <option value="JEE Coaching (Advanced)">JEE Coaching (Advanced)</option>
+                                <option value="NEET Coaching for Medical">NEET Coaching for Medical</option>
+                                <option value="Foundation Course (Class IX & X)">Foundation Course (Class IX & X)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
+                            <textarea id="message" name="message" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter your message" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg w-full">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- FAQ Section -->
+            <div class="mt-16">
+                <h2 class="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-3">How can I enroll for courses?</h3>
+                        <p class="text-gray-700">You can enroll by visiting our center, calling us at +91 9450545318, or filling out the admission form on our website.</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-3">What are the batch timings?</h3>
+                        <p class="text-gray-700">We offer flexible batch timings for both morning and evening sessions. Please contact us for current batch schedules.</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-3">Do you provide study materials?</h3>
+                        <p class="text-gray-700">Yes, we provide comprehensive study materials for all subjects as part of our course curriculum.</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-3">What is the faculty qualification?</h3>
+                        <p class="text-gray-700">Our faculty consists of IITians and Doctors with years of teaching experience in competitive exam preparation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Photon Coaching</h3>
+                    <p>Best IIT JEE & NEET Coaching Institute in Varanasi</p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="/" class="hover:text-blue-300">Home</a></li>
+                        <li><a href="/courses" class="hover:text-blue-300">Courses</a></li>
+                        <li><a href="/student-corner" class="hover:text-blue-300">Student Corner</a></li>
+                        <li><a href="/teacher-dashboard" class="hover:text-blue-300">Faculty Dashboard</a></li>
+                        <li><a href="/contact" class="hover:text-blue-300">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact Us</h3>
+                    <p><i class="fas fa-phone mr-2"></i> +91 9450545318</p>
+                    <p><i class="fas fa-envelope mr-2"></i> info@photoncoaching.in</p>
+                    <p><i class="fas fa-map-marker-alt mr-2"></i> Varanasi, Uttar Pradesh</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center">
+                <p>&copy; 2025 Photon Coaching. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/js/main.js"></script>
+</body>
+</html>

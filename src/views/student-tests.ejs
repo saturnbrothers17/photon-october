@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        * { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #0f172a; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Space Grotesk', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white">
+    <div class="min-h-screen pt-24 pb-12 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <!-- Header -->
+            <div class="mb-12 text-center" data-aos="fade-up">
+                <a href="/student-corner" class="inline-flex items-center text-blue-400 hover:text-blue-300 mb-6">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+                </a>
+                <h1 class="text-4xl md:text-5xl font-black mb-4">
+                    Available <span class="gradient-text">Tests</span>
+                </h1>
+                <p class="text-gray-400 text-lg">Take tests and practice exams</p>
+            </div>
+
+            <!-- Tests Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <% if (tests && tests.length > 0) { %>
+                    <% tests.forEach((test, index) => { %>
+                        <div class="glass rounded-2xl p-6" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-2xl font-bold"><%= test.title %></h3>
+                                <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm">
+                                    <i class="fas fa-circle text-xs mr-1"></i> Active
+                                </span>
+                            </div>
+                            <div class="mb-4 space-y-2">
+                                <p class="text-gray-400">
+                                    <i class="fas fa-book mr-2 text-blue-400"></i>
+                                    Subject: <span class="text-white"><%= test.subject %></span>
+                                </p>
+                                <p class="text-gray-400">
+                                    <i class="fas fa-clock mr-2 text-purple-400"></i>
+                                    Duration: <span class="text-white"><%= test.duration %> minutes</span>
+                                </p>
+                                <% if (test.description) { %>
+                                    <p class="text-gray-400 text-sm mt-2"><%= test.description %></p>
+                                <% } %>
+                            </div>
+                            <a href="/student-corner/tests/<%= test.id %>" class="block w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl font-bold text-center hover:scale-105 transition-all">
+                                <i class="fas fa-play mr-2"></i> Start Test
+                            </a>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="col-span-2 glass rounded-2xl p-12 text-center" data-aos="fade-up">
+                        <i class="fas fa-clipboard-list text-6xl text-gray-600 mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2">No Tests Available</h3>
+                        <p class="text-gray-400">Check back later for new tests from your teachers</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true });
+    </script>
+</body>
+</html>

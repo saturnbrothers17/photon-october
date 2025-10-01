@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Photon Coaching App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #1e40af;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2563eb;
+        }
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .error {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Photon Coaching Application</h1>
+    
+    <div class="test-section">
+        <h2>Test Database Connection</h2>
+        <button onclick="testDatabase()">Test Database</button>
+        <div id="database-status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Web Server</h2>
+        <button onclick="testServer()">Test Server</button>
+        <div id="server-status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Open Application Pages</h2>
+        <button onclick="openPage('/')">Home Page</button>
+        <button onclick="openPage('/student-corner')">Student Corner</button>
+        <button onclick="openPage('/auth/login')">Login Page</button>
+        <button onclick="openPage('/auth/register')">Register Page</button>
+    </div>
+    
+    <script>
+        function testDatabase() {
+            const statusDiv = document.getElementById('database-status');
+            statusDiv.innerHTML = '<div class="status">Testing database connection...</div>';
+            
+            // In a real implementation, we would test the database connection here
+            // For now, we'll just simulate a successful test
+            setTimeout(() => {
+                statusDiv.innerHTML = '<div class="status success">Database connection successful! (Simulated)</div>';
+            }, 1000);
+        }
+        
+        function testServer() {
+            const statusDiv = document.getElementById('server-status');
+            statusDiv.innerHTML = '<div class="status">Testing server connection...</div>';
+            
+            // Try to fetch from the server
+            fetch('http://localhost:7000/')
+                .then(response => {
+                    if (response.ok) {
+                        statusDiv.innerHTML = '<div class="status success">Server is running! Status: ' + response.status + '</div>';
+                    } else {
+                        statusDiv.innerHTML = '<div class="status error">Server responded with status: ' + response.status + '</div>';
+                    }
+                })
+                .catch(error => {
+                    statusDiv.innerHTML = '<div class="status error">Server connection failed: ' + error.message + '</div>';
+                });
+        }
+        
+        function openPage(path) {
+            window.open('http://localhost:7000' + path, '_blank');
+        }
+    </script>
+</body>
+</html>
