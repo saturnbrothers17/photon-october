@@ -4,9 +4,7 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
-    "build": "tsc && npm run copy-views && npm run copy-public",
-    "copy-views": "cp -r src/views dist/views || xcopy /E /I /Y src\\views dist\\views",
-    "copy-public": "cp -r src/public dist/public || xcopy /E /I /Y src\\public dist\\public",
+    "build": "tsc && node copy-assets.js",
     "start": "node dist/server.js",
     "dev": "nodemon src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
