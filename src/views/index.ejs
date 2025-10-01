@@ -22,8 +22,12 @@
     <meta property="og:title" content="<%= title %>">
     <meta property="og:description" content="<%= description %>">
     <meta property="og:image" content="https://photoncoaching.in/images/og-image.jpg">
-    <meta property="og:site_name" content="Photon Coaching Institute">
+    <meta property="og:site_name" content="Photon">
     <meta property="og:locale" content="en_IN">
+    
+    <!-- Site Name for Google -->
+    <meta name="application-name" content="Photon">
+    <meta name="apple-mobile-web-app-title" content="Photon">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
@@ -327,8 +331,16 @@
                 "@type": "EducationalOrganization",
                 "@id": "https://photoncoaching.in/#organization",
                 "name": "Photon Coaching Institute",
+                "alternateName": "Photon",
+                "legalName": "Photon Coaching Institute",
                 "url": "https://photoncoaching.in",
                 "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://photoncoaching.in/images/logo.svg",
+                    "width": "600",
+                    "height": "600"
+                },
+                "image": {
                     "@type": "ImageObject",
                     "url": "https://photoncoaching.in/images/logo.svg"
                 },
