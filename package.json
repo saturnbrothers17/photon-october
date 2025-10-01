@@ -21,18 +21,19 @@
     "@types/multer": "^2.0.0",
     "@types/node": "^24.5.2",
     "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "form-data": "^4.0.4",
     "multer": "^2.0.2",
     "node-fetch": "^3.3.2",
-    "nodemon": "^3.1.10",
     "sharp": "^0.34.4",
-    "tesseract.js": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },
   "devDependencies": {
-    "@types/cookie-parser": "^1.4.9"
+    "@types/cookie-parser": "^1.4.9",
+    "nodemon": "^3.1.10",
+    "tesseract.js": "^6.0.1"
   }
 }
