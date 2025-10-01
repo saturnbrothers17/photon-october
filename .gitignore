@@ -9,8 +9,9 @@ node_modules/
 # Build output
 dist/
 
-# Uploads (local files)
-uploads/
+# Uploads (local files) - keep folder but ignore contents
+uploads/*
+!uploads/.gitkeep
 
 # Logs
 *.log
