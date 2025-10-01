@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import { getUser, getUserFromCookie } from './authController';
 import { createTest, addQuestion, addOption, getPerformanceAnalytics, getAllTests, getTestPerformanceDetails, getStudyMaterials, uploadStudyMaterial, client } from '../database';
-import multer from 'multer';
+import { uploadMaterial } from '../config/cloudinary';
 import path from 'path';
-import fs from 'fs';
 
 export const getTeacherDashboardPage = (req: Request, res: Response) => {
     // Get user information from cookie
@@ -114,38 +113,8 @@ export const createTestHandler = async (req: Request, res: Response) => {
     }
 };
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const uploadDir = path.join(__dirname, '../../uploads/materials');
-        if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir, { recursive: true });
-        }
-        cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + path.extname(file.originalname));
-    }
-});
-
-const upload = multer({
-    storage: storage,
-    limits: { fileSize: 50 * 1024 * 1024 }, // 50MB limit
-    fileFilter: (req, file, cb) => {
-        const allowedTypes = /pdf|doc|docx|ppt|pptx|jpg|jpeg|png/;
-        const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-        const mimetype = allowedTypes.test(file.mimetype);
-        
-        if (extname && mimetype) {
-            cb(null, true);
-        } else {
-            cb(new Error('Only PDF, Word, PowerPoint, and Image files are allowed!'));
-        }
-    }
-});
-
-export const uploadMiddleware = upload.single('material');
+// Use Cloudinary storage (configured in cloudinary.ts)
+export const uploadMiddleware = uploadMaterial.single('material');
 
 export const getMaterialsPage = async (req: Request, res: Response) => {
     const user = getUserFromCookie(req);
@@ -179,13 +148,13 @@ export const uploadMaterialHandler = async (req: Request, res: Response) => {
         
         const { title, description, subject } = req.body;
         
-        // Save to database
+        // Save to database with Cloudinary URL
         await uploadStudyMaterial({
             title: title,
             description: description || '',
             subject: subject,
             file_name: req.file.originalname,
-            file_path: `/uploads/materials/${req.file.filename}`,
+            file_path: req.file.path, // Cloudinary URL
             file_type: path.extname(req.file.originalname),
             file_size: req.file.size,
             uploaded_by: 1 // In production, use actual user ID
