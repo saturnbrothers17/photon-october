@@ -41,3 +41,5 @@ Thumbs.db
 check-*.js
 add-*.js
 remove-*.js
+
+.vercel
