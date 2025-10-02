@@ -620,18 +620,36 @@ export async function getTestsWithStatus() {
                 scheduled_date,
                 start_time,
                 end_time,
-                created_at,
-                CASE 
-                    WHEN start_time IS NULL OR end_time IS NULL THEN 'available'
-                    WHEN datetime('now') < start_time THEN 'scheduled'
-                    WHEN datetime('now') BETWEEN start_time AND end_time THEN 'live'
-                    WHEN datetime('now') > end_time THEN 'ended'
-                    ELSE 'available'
-                END as status
+                created_at
             FROM tests 
             ORDER BY created_at DESC
         `);
-        return result.rows;
+        
+        // Calculate status in JavaScript to handle timezones correctly
+        const testsWithStatus = result.rows.map((test: any) => {
+            let status = 'available';
+            
+            if (test.start_time && test.end_time) {
+                const now = new Date();
+                const startTime = new Date(test.start_time);
+                const endTime = new Date(test.end_time);
+                
+                if (now < startTime) {
+                    status = 'scheduled';
+                } else if (now >= startTime && now <= endTime) {
+                    status = 'live';
+                } else if (now > endTime) {
+                    status = 'ended';
+                }
+            }
+            
+            return {
+                ...test,
+                status: status
+            };
+        });
+        
+        return testsWithStatus;
     } catch (error) {
         console.error('Error fetching tests with status:', error);
         return [];
