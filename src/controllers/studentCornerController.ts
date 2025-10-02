@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { getUser } from './authController';
-import { getStudyMaterials, getAllTests, getTestWithQuestions, saveTestResult, getTestResult, getStudentRank, client } from '../database';
+import { getStudyMaterials, getAllTests, getTestWithQuestions, saveTestResult, getTestResult, getStudentRank, getTestsWithStatus, client } from '../database';
 
 // Gemini API Configuration
 const GEMINI_API_KEY = 'AIzaSyAVxdBPUmipUnIImfEnlJVAjGD9q1l_zMo';
@@ -50,8 +50,8 @@ export const getTestsPage = async (req: Request, res: Response) => {
     }
     
     try {
-        // Fetch all tests from database
-        const tests = await getAllTests();
+        // Fetch all tests with scheduling status
+        const tests = await getTestsWithStatus();
         
         res.render('student-tests', {
             title: 'Tests - Photon Coaching',
