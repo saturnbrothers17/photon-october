@@ -595,32 +595,73 @@
                     
                     const { test_id } = await initResponse.json();
                     
-                    // Step 2: Upload questions one by one
+                    // Step 2: Upload questions one by one with retry logic
+                    const failedQuestions = [];
+                    
                     for (let i = 0; i < questions.length; i++) {
                         updateProgress(i + 1, questions.length, `Uploading question ${i + 1} of ${questions.length}...`);
-                        console.log(`Uploading question ${i + 1} of ${questions.length}`);
                         
-                        const questionData = {
-                            test_id: test_id,
-                            question_text: questions[i].text,
-                            diagram: questions[i].diagram || null,
-                            explanation: questions[i].explanation || '',
-                            difficulty: questions[i].difficulty || 'medium',
-                            options: questions[i].options
-                        };
+                        let uploaded = false;
+                        let retries = 3;
+                        let lastError = null;
                         
-                        const questionResponse = await fetch('/teacher-dashboard/api/add-question', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(questionData)
-                        });
-                        
-                        if (!questionResponse.ok) {
-                            throw new Error(`Failed to upload question ${i + 1}`);
+                        while (!uploaded && retries > 0) {
+                            try {
+                                const questionData = {
+                                    test_id: test_id,
+                                    question_text: questions[i].text,
+                                    diagram: questions[i].diagram || null,
+                                    explanation: questions[i].explanation || '',
+                                    difficulty: questions[i].difficulty || 'medium',
+                                    options: questions[i].options
+                                };
+                                
+                                const questionResponse = await fetch('/teacher-dashboard/api/add-question', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(questionData)
+                                });
+                                
+                                if (!questionResponse.ok) {
+                                    const errorText = await questionResponse.text();
+                                    throw new Error(`HTTP ${questionResponse.status}: ${errorText}`);
+                                }
+                                
+                                const result = await questionResponse.json();
+                                
+                                // Validate that question was actually saved
+                                if (!result.success || !result.question_id) {
+                                    throw new Error('No question_id returned from server');
+                                }
+                                
+                                uploaded = true;
+                                console.log(`✓ Question ${i + 1} uploaded successfully (ID: ${result.question_id})`);
+                                
+                            } catch (error) {
+                                retries--;
+                                lastError = error;
+                                console.error(`✗ Question ${i + 1} failed (attempt ${3-retries}/3):`, error.message);
+                                
+                                if (retries > 0) {
+                                    // Wait before retry (exponential backoff)
+                                    const waitTime = (3 - retries) * 1000;
+                                    console.log(`  Retrying in ${waitTime}ms...`);
+                                    await new Promise(resolve => setTimeout(resolve, waitTime));
+                                } else {
+                                    failedQuestions.push({ number: i + 1, error: lastError.message });
+                                    console.error(`✗✗✗ Question ${i + 1} FAILED after 3 attempts`);
+                                }
+                            }
                         }
                         
-                        // Small delay to make progress visible
-                        await new Promise(resolve => setTimeout(resolve, 50));
+                        // Small delay between questions
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    }
+                    
+                    // Check if any questions failed
+                    if (failedQuestions.length > 0) {
+                        const failedNumbers = failedQuestions.map(q => q.number).join(', ');
+                        throw new Error(`Failed to upload ${failedQuestions.length} question(s): ${failedNumbers}. Please try again.`);
                     }
                     
                     // Step 3: Finalize test
