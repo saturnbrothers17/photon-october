@@ -1,0 +1,19 @@
+# Robots.txt for Photon Coaching Institute
+User-agent: *
+Allow: /
+Allow: /courses
+Allow: /student-corner
+Allow: /contact
+Allow: /auth/login
+Allow: /auth/register
+
+# Disallow private areas
+Disallow: /teacher-dashboard/
+Disallow: /admin/
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://photoncoaching.in/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1

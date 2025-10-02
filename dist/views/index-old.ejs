@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="alternate icon" type="image/x-icon" href="/images/favicon.ico">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link href="/css/style.css" rel="stylesheet">
+    
+    <style>
+        * {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        /* Enhanced Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyIiBoZWlnaHQ9IjIiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI3BhdHRlcm4pIi8+PC9zdmc+') 0 0;
+            opacity: 0.1;
+        }
+        
+        /* Animated Elements */
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        .floating-delay-1 {
+            animation-delay: 0.5s;
+        }
+        
+        .floating-delay-2 {
+            animation-delay: 1s;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Section Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .animate-on-scroll.animate-fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Custom Card Styles */
+        .feature-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(30, 64, 175, 0.2);
+        }
+        
+        .course-card {
+            transition: all 0.3s ease;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(30, 64, 175, 0.15);
+        }
+        
+        /* Testimonial Styles */
+        .testimonial-card {
+            transition: all 0.3s ease;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .testimonial-card:hover {
+            transform: scale(1.02);
+        }
+        
+        /* Custom Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(30, 64, 175, 0.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid white;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-radius: 12px;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        /* Stats Section */
+        .stats-card {
+            transition: all 0.3s ease;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(30, 64, 175, 0.2);
+        }
+        
+        /* Animations */
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        /* Section Dividers */
+        .section-divider {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-divider::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+        }
+        
+        /* Custom Icons */
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .hero-content {
+                text-align: center;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+        }
+        
+        /* Testimonials Animation */
+        .testimonial-slider {
+            display: flex;
+            overflow-x: hidden;
+        }
+        
+        .testimonial-slide {
+            min-width: 100%;
+            transition: transform 0.5s ease;
+        }
+        
+        /* Wave Animation */
+        .wave-animation {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .wave-animation::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: wave 20s linear infinite;
+        }
+        
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Enhanced Header Styles */
+        .nav-link {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-link::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .nav-link:hover::before {
+            left: 100%;
+        }
+        
+        /* Dropdown Menu */
+        .dropdown-menu {
+            transform-origin: top center;
+        }
+        
+        /* Mobile Menu */
+        #mobile-menu {
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Faculty Login Modal */
+        #facultyLoginModal {
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        #facultyLoginModal .bg-white {
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-lg sticky top-0 z-50 transition-all duration-300" id="main-header">
+        <div class="container mx-auto px-4">
+            <nav class="navbar flex items-center justify-between py-3">
+                <a class="navbar-brand flex items-center" href="/">
+                    <img src="/images/logo.svg" alt="Photon Coaching Logo" class="h-14 transition-transform duration-300 hover:scale-105">
+                </a>
+                <div class="hidden md:flex items-center space-x-1">
+                    <a class="nav-link px-4 py-2 rounded-lg font-medium transition-all duration-300 relative group" href="/">
+                        <span class="relative z-10">Home</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <div class="relative group">
+                        <button class="nav-link px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center">
+                            <span>Courses</span>
+                            <i class="fas fa-chevron-down text-xs ml-2 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-xl opacity-0 invisible transition-all duration-300 group-hover:opacity-100 group-hover:visible transform translate-y-2 group-hover:translate-y-0 z-50 border border-gray-100">
+                            <a href="/courses#jee-advanced" class="block px-4 py-3 hover:bg-blue-50 transition-colors duration-200">
+                                <div class="font-medium text-gray-900">JEE Advanced</div>
+                                <div class="text-sm text-gray-600">Engineering Aspirants</div>
+                            </a>
+                            <a href="/courses#neet" class="block px-4 py-3 hover:bg-blue-50 transition-colors duration-200">
+                                <div class="font-medium text-gray-900">NEET Medical</div>
+                                <div class="text-sm text-gray-600">Medical Aspirants</div>
+                            </a>
+                            <a href="/courses#foundation" class="block px-4 py-3 hover:bg-blue-50 transition-colors duration-200">
+                                <div class="font-medium text-gray-900">Foundation Course</div>
+                                <div class="text-sm text-gray-600">Class 9th & 10th</div>
+                            </a>
+                            <a href="/courses" class="block px-4 py-3 hover:bg-blue-50 transition-colors duration-200 border-t border-gray-100">
+                                <div class="font-medium text-blue-600">View All Courses</div>
+                            </a>
+                        </div>
+                    </div>
+                    <a class="nav-link px-4 py-2 rounded-lg font-medium transition-all duration-300 relative group" href="/student-corner">
+                        <span class="relative z-10">Student Corner</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a class="nav-link px-4 py-2 rounded-lg font-medium transition-all duration-300 relative group" id="faculty-portal-link" style="cursor: pointer;">
+                        <span class="relative z-10">Faculty Portal</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a class="nav-link px-4 py-2 rounded-lg font-medium transition-all duration-300 relative group" href="/contact">
+                        <span class="relative z-10">Contact</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center">
+                    <a href="tel:9450545318" class="px-5 py-2 rounded-lg font-medium bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center">
+                        <i class="fas fa-phone mr-2"></i> Enquire Now
+                    </a>
+                </div>
+                <button class="md:hidden text-gray-700 focus:outline-none" id="mobile-menu-button">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </nav>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden bg-white shadow-lg absolute top-full left-0 w-full opacity-0 invisible transition-all duration-300 transform translate-y-2" id="mobile-menu">
+            <div class="container mx-auto px-4 py-3">
+                <div class="flex flex-col space-y-3 pb-4">
+                    <a class="nav-link px-4 py-3 rounded-lg font-medium bg-gray-50" href="/">Home</a>
+                    <div class="border-t border-gray-100 pt-3">
+                        <div class="px-4 py-2 font-medium text-gray-900">Courses</div>
+                        <a href="/courses#jee-advanced" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 rounded-lg">JEE Advanced</a>
+                        <a href="/courses#neet" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 rounded-lg">NEET Medical</a>
+                        <a href="/courses#foundation" class="block px-8 py-2 text-gray-700 hover:bg-blue-50 rounded-lg">Foundation Course</a>
+                        <a href="/courses" class="block px-8 py-2 text-blue-600 font-medium">View All Courses</a>
+                    </div>
+                    <a class="nav-link px-4 py-3 rounded-lg font-medium bg-gray-50" href="/student-corner">Student Corner</a>
+                    <a class="nav-link px-4 py-3 rounded-lg font-medium bg-gray-50" id="mobile-faculty-portal-link" style="cursor: pointer;">Faculty Portal</a>
+                    <a class="nav-link px-4 py-3 rounded-lg font-medium bg-gray-50" href="/contact">Contact</a>
+                    <a href="tel:9450545318" class="px-4 py-3 rounded-lg font-medium bg-gradient-to-r from-blue-600 to-blue-700 text-white text-center flex items-center justify-center">
+                        <i class="fas fa-phone mr-2"></i> Enquire Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Faculty Login Modal -->
+        <div id="facultyLoginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 relative">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900">Faculty Portal Login</h3>
+                        <button id="closeFacultyModal" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times text-2xl"></i>
+                        </button>
+                    </div>
+                    <p class="text-gray-600 mb-6">Access your faculty dashboard with your Photon credentials</p>
+                    
+                    <form id="facultyLoginForm" action="/auth/login" method="POST" class="space-y-4">
+                        <div>
+                            <label for="faculty_photon_id" class="block text-sm font-medium text-gray-700 mb-1">Photon ID</label>
+                            <input type="text" id="faculty_photon_id" name="photon_id" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                        </div>
+                        <div>
+                            <label for="faculty_password" class="block text-sm font-medium text-gray-700 mb-1">Photon Password</label>
+                            <input type="password" id="faculty_password" name="password" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                        </div>
+                        <input type="hidden" name="redirect" value="/teacher-dashboard">
+                        <div class="flex items-center">
+                            <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-bold py-3 px-4 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                                Login to Faculty Portal
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="mt-4 text-center text-sm text-gray-600">
+                        <p>Only authorized faculty members can access this portal</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <section class="hero-section text-white py-20 md:py-28">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col lg:flex-row items-center">
+                    <div class="lg:w-1/2 mb-12 lg:mb-0 lg:pr-12 animate-on-scroll">
+                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
+                            Unlock Your <span class="text-yellow-300">Potential</span> with PHOTON
+                        </h1>
+                        <p class="text-xl md:text-2xl mb-4 font-medium">
+                            Varanasi's Premier Institute for JEE & NEET Preparation
+                        </p>
+                        <h2 class="text-2xl md:text-3xl font-semibold mt-8 mb-4">
+                            Admissions Open for 2025-26 Academic Year
+                        </h2>
+                        <p class="text-lg md:text-xl mb-8 max-w-2xl">
+                            Join thousands of successful students who transformed their dreams into reality with our expert guidance and proven results.
+                        </p>
+                        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 hero-buttons">
+                            <a href="tel:9450545318" class="btn-primary py-4 px-8 rounded-lg text-lg font-bold flex items-center justify-center">
+                                <i class="fas fa-phone mr-3"></i> Enquire Now
+                            </a>
+                            <a href="/courses" class="btn-secondary py-4 px-8 rounded-lg text-lg font-bold flex items-center justify-center">
+                                <i class="fas fa-graduation-cap mr-3"></i> Explore Courses
+                            </a>
+                        </div>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center animate-on-scroll">
+                        <div class="relative">
+                            <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl p-8 max-w-md w-full transform rotate-3 floating">
+                                <div class="bg-white rounded-xl p-6 shadow-2xl">
+                                    <div class="flex items-center mb-6">
+                                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
+                                            <i class="fas fa-trophy text-white text-xl"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-lg font-bold text-gray-800">Success Stories</h3>
+                                            <p class="text-sm text-gray-600">Our Students Achievements</p>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-4 mb-6">
+                                        <div class="text-center">
+                                            <div class="text-2xl font-bold text-blue-600">500+</div>
+                                            <div class="text-xs text-gray-600">IIT Aspirants</div>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="text-2xl font-bold text-green-600">300+</div>
+                                            <div class="text-xs text-gray-600">NEET Qualifiers</div>
+                                        </div>
+                                        <div class="text-center">
+                                            <div class="text-2xl font-bold text-purple-600">50+</div>
+                                            <div class="text-xs text-gray-600">Top Ranks</div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-blue-50 rounded-lg p-4">
+                                        <p class="text-sm text-gray-700 italic">
+                                            "PHOTON transformed my preparation journey. The faculty and resources are exceptional!"
+                                        </p>
+                                        <p class="text-xs text-gray-500 mt-2 text-right">- Anjali Singh, IIT Aspirant</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="absolute -top-6 -right-6 w-24 h-24 bg-yellow-400 rounded-full floating floating-delay-1 flex items-center justify-center">
+                                <i class="fas fa-star text-white text-3xl"></i>
+                            </div>
+                            <div class="absolute -bottom-6 -left-6 w-20 h-20 bg-green-500 rounded-full floating floating-delay-2 flex items-center justify-center">
+                                <i class="fas fa-medal text-white text-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="py-16 bg-white section-divider">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="stats-card bg-gradient-to-br from-blue-50 to-blue-100 p-6 text-center animate-on-scroll">
+                        <div class="text-4xl md:text-5xl font-bold text-blue-600 mb-2">10,000+</div>
+                        <div class="text-lg font-semibold text-gray-800">Students Coached</div>
+                        <div class="text-sm text-gray-600 mt-2">Across India</div>
+                    </div>
+                    <div class="stats-card bg-gradient-to-br from-green-50 to-green-100 p-6 text-center animate-on-scroll">
+                        <div class="text-4xl md:text-5xl font-bold text-green-600 mb-2">500+</div>
+                        <div class="text-lg font-semibold text-gray-800">IIT Selections</div>
+                        <div class="text-sm text-gray-600 mt-2">Since 2015</div>
+                    </div>
+                    <div class="stats-card bg-gradient-to-br from-purple-50 to-purple-100 p-6 text-center animate-on-scroll">
+                        <div class="text-4xl md:text-5xl font-bold text-purple-600 mb-2">300+</div>
+                        <div class="text-lg font-semibold text-gray-800">NEET Qualifiers</div>
+                        <div class="text-sm text-gray-600 mt-2">Consistent Results</div>
+                    </div>
+                    <div class="stats-card bg-gradient-to-br from-yellow-50 to-yellow-100 p-6 text-center animate-on-scroll">
+                        <div class="text-4xl md:text-5xl font-bold text-yellow-600 mb-2">50+</div>
+                        <div class="text-lg font-semibold text-gray-800">Top Ranks</div>
+                        <div class="text-sm text-gray-600 mt-2">In Top Exams</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Photon -->
+        <section class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16 animate-on-scroll">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-gray-900">
+                        Why Choose <span class="text-blue-600">PHOTON</span> Coaching?
+                    </h2>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                        The PHOTON Advantage in Varanasi - Excellence in JEE & NEET Preparation
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="feature-card bg-white p-8 animate-on-scroll">
+                        <div class="feature-icon bg-gradient-to-br from-blue-500 to-blue-700 text-white">
+                            <i class="fas fa-chalkboard-teacher text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-center mb-4 text-gray-900">Expert Faculty</h3>
+                        <p class="text-gray-700 text-center">
+                            Learn directly from our dedicated core team of IITians and Doctors, who are masters in their fields.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card bg-white p-8 animate-on-scroll">
+                        <div class="feature-icon bg-gradient-to-br from-green-500 to-green-700 text-white">
+                            <i class="fas fa-chart-line text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-center mb-4 text-gray-900">Proven Results</h3>
+                        <p class="text-gray-700 text-center">
+                            Our track record of producing top rankers in Varanasi speaks for itself. Your success is our mission.
+                        </p>
+                    </div>
+                    
+                    <div class="feature-card bg-white p-8 animate-on-scroll">
+                        <div class="feature-icon bg-gradient-to-br from-purple-500 to-purple-700 text-white">
+                            <i class="fas fa-lightbulb text-3xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-center mb-4 text-gray-900">Innovative Pedagogy</h3>
+                        <p class="text-gray-700 text-center">
+                            We use modern, engaging teaching methods to make complex topics simple and clear.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PST Section -->
+        <section class="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col lg:flex-row items-center">
+                    <div class="lg:w-1/2 mb-12 lg:mb-0 lg:pr-12 animate-on-scroll">
+                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+                            Ace Your Preparation with PST
+                        </h2>
+                        <p class="text-2xl font-semibold mb-6 text-yellow-300">
+                            (PHOTON Sunday Tests)
+                        </p>
+                        <div class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 mb-8 inline-block">
+                            <p class="text-3xl md:text-4xl font-extrabold">
+                                COMPLETELY <span class="text-yellow-300">FREE</span>
+                            </p>
+                        </div>
+                        <p class="text-lg md:text-xl mb-8 max-w-2xl">
+                            Measure your performance against thousands of students at our Varanasi center or online, identify your weak areas, and get a real-time All India Rank before the actual exam. Don't miss this golden opportunity!
+                        </p>
+                        <a href="tel:9450545318" class="btn-primary py-4 px-8 rounded-lg text-lg font-bold inline-flex items-center pulse">
+                            <i class="fas fa-phone mr-3"></i> Register Now for Free Test
+                        </a>
+                    </div>
+                    <div class="lg:w-1/2 flex justify-center animate-on-scroll">
+                        <div class="relative">
+                            <div class="bg-white rounded-full w-64 h-64 md:w-80 md:h-80 flex items-center justify-center shadow-2xl">
+                                <div class="text-center">
+                                    <div class="text-5xl md:text-6xl font-extrabold text-blue-600 mb-2">PST</div>
+                                    <div class="text-xl md:text-2xl font-bold text-gray-800">Sunday Tests</div>
+                                    <div class="text-lg text-gray-600 mt-2">All India Rank</div>
+                                    <div class="mt-4">
+                                        <span class="inline-block bg-green-500 text-white px-4 py-2 rounded-full text-sm font-bold">
+                                            100% Free
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="absolute -top-4 -right-4 w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg floating">
+                                <i class="fas fa-crown text-white text-2xl"></i>
+                            </div>
+                            <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-red-500 rounded-full flex items-center justify-center shadow-lg floating floating-delay-1">
+                                <i class="fas fa-bolt text-white text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Courses Section -->
+        <section class="py-20 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16 animate-on-scroll">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-gray-900">
+                        Our <span class="text-blue-600">Courses</span>
+                    </h2>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                        Coaching Courses Tailored for Success in JEE & NEET
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="course-card bg-gradient-to-br from-blue-50 to-white border border-blue-100 p-8 animate-on-scroll">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-rocket text-white"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900">JEE Advanced</h3>
+                        </div>
+                        <p class="text-gray-700 mb-6">
+                            A comprehensive program designed to tackle the toughest problems in the JEE Advanced syllabus for engineering aspirants in Varanasi.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Complete Syllabus Coverage</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Advanced Problem Solving</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Regular Mock Tests</span>
+                            </li>
+                        </ul>
+                        <a href="/courses" class="btn-primary py-3 px-6 rounded-lg font-bold inline-block w-full text-center">
+                            Learn More
+                        </a>
+                    </div>
+                    
+                    <div class="course-card bg-gradient-to-br from-green-50 to-white border border-green-100 p-8 animate-on-scroll">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-heartbeat text-white"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900">NEET Medical</h3>
+                        </div>
+                        <p class="text-gray-700 mb-6">
+                            In-depth coverage of the complete NEET Biology, Physics, and Chemistry syllabus with a focus on conceptual understanding.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Expert Medical Faculty</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Specialized Test Series</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Doubt Clearing Sessions</span>
+                            </li>
+                        </ul>
+                        <a href="/courses" class="btn-primary py-3 px-6 rounded-lg font-bold inline-block w-full text-center">
+                            Learn More
+                        </a>
+                    </div>
+                    
+                    <div class="course-card bg-gradient-to-br from-purple-50 to-white border border-purple-100 p-8 animate-on-scroll">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-seedling text-white"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900">Foundation Course</h3>
+                        </div>
+                        <p class="text-gray-700 mb-6">
+                            Build a strong base in Science and Mathematics to excel in future competitive exams right here in Varanasi.
+                        </p>
+                        <ul class="space-y-2 mb-6">
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Class 9th & 10th Syllabus</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>NTSE Preparation</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                <span>Olympiad Training</span>
+                            </li>
+                        </ul>
+                        <a href="/courses" class="btn-primary py-3 px-6 rounded-lg font-bold inline-block w-full text-center">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-12 animate-on-scroll">
+                    <a href="/courses" class="btn-primary py-4 px-10 rounded-lg text-xl font-bold inline-flex items-center">
+                        <i class="fas fa-book-open mr-3"></i> View All Coaching Programs
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Student Resources -->
+        <section class="py-20 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16 animate-on-scroll">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-gray-900">
+                        Student <span class="text-blue-600">Resources</span>
+                    </h2>
+                    <p class="text-xl text-gray-600">
+                        Everything You Need for Your Preparation Journey
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="feature-card bg-white p-6 text-center animate-on-scroll">
+                        <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-book text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-gray-900">Study Materials</h3>
+                        <p class="text-gray-700 mb-4">Comprehensive notes and resources for all subjects</p>
+                        <a href="/student-corner" class="text-blue-600 hover:text-blue-800 font-semibold inline-flex items-center">
+                            Access Now <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="feature-card bg-white p-6 text-center animate-on-scroll">
+                        <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-chart-bar text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-gray-900">Test Results</h3>
+                        <p class="text-gray-700 mb-4">Check your PST and mock test performance</p>
+                        <a href="/student-corner" class="text-blue-600 hover:text-blue-800 font-semibold inline-flex items-center">
+                            View Results <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="feature-card bg-white p-6 text-center animate-on-scroll">
+                        <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-video text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-gray-900">Video Lectures</h3>
+                        <p class="text-gray-700 mb-4">Access recorded lectures and doubt sessions</p>
+                        <a href="/student-corner" class="text-blue-600 hover:text-blue-800 font-semibold inline-flex items-center">
+                            Watch Now <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="feature-card bg-white p-6 text-center animate-on-scroll">
+                        <div class="w-16 h-16 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-question-circle text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-gray-900">Doubt Forum</h3>
+                        <p class="text-gray-700 mb-4">Get your doubts cleared by expert faculty</p>
+                        <a href="/student-corner" class="text-blue-600 hover:text-blue-800 font-semibold inline-flex items-center">
+                            Ask Doubts <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="py-20 bg-white section-divider">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16 animate-on-scroll">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-gray-900">
+                        Student <span class="text-blue-600">Success Stories</span>
+                    </h2>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                        Hear from our students who made it to top institutions
+                    </p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto">
+                    <div class="testimonial-slider">
+                        <div class="testimonial-slide">
+                            <div class="testimonial-card bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl shadow-lg border border-blue-100 animate-on-scroll">
+                                <div class="flex items-center mb-6">
+                                    <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mr-4">
+                                        AS
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900">Anjali Singh</h3>
+                                        <p class="text-blue-600">IIT Bombay, JEE Advanced Rank 42</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 text-lg italic mb-6">
+                                    "PHOTON's personalized approach and rigorous practice tests helped me secure a rank in the top 50. The faculty's dedication and the supportive environment made all the difference in my journey."
+                                </p>
+                                <div class="flex items-center">
+                                    <div class="flex text-yellow-400 mr-2">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <span class="text-gray-600">5/5</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-20 bg-gradient-to-r from-blue-700 to-indigo-800 text-white wave-animation">
+            <div class="container mx-auto px-4">
+                <div class="text-center max-w-3xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 animate-on-scroll">
+                        Ready to Join <span class="text-yellow-300">PHOTON</span>?
+                    </h2>
+                    <p class="text-xl mb-10 animate-on-scroll">
+                        Take the first step towards your dream career in Engineering or Medicine
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 animate-on-scroll">
+                        <a href="/auth/register" class="btn-primary py-4 px-8 rounded-lg text-lg font-bold inline-flex items-center justify-center">
+                            <i class="fas fa-user-plus mr-3"></i> Register Now
+                        </a>
+                        <a href="tel:9450545318" class="bg-white text-blue-700 py-4 px-8 rounded-lg text-lg font-bold inline-flex items-center justify-center hover:bg-gray-100 transition">
+                            <i class="fas fa-phone mr-3"></i> Call Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-white py-12">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="md:col-span-1">
+                        <img src="/images/logo.svg" alt="Photon Coaching Logo" class="h-16 mb-4">
+                        <p class="text-gray-400 mb-4">
+                            Varanasi's premier coaching institute for JEE & NEET preparation with a proven track record of success.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-gray-400 hover:text-white">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-white">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-white">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-white">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+                        <ul class="space-y-2">
+                            <li><a href="/" class="text-gray-400 hover:text-white">Home</a></li>
+                            <li><a href="/courses" class="text-gray-400 hover:text-white">Courses</a></li>
+                            <li><a href="/student-corner" class="text-gray-400 hover:text-white">Student Corner</a></li>
+                            <li><a href="/teacher-dashboard" class="text-gray-400 hover:text-white">Faculty Dashboard</a></li>
+                            <li><a href="/contact" class="text-gray-400 hover:text-white">Contact</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">Courses</h3>
+                        <ul class="space-y-2">
+                            <li><a href="/courses#jee-advanced" class="text-gray-400 hover:text-white">JEE Advanced</a></li>
+                            <li><a href="/courses#neet" class="text-gray-400 hover:text-white">NEET Medical</a></li>
+                            <li><a href="/courses#foundation" class="text-gray-400 hover:text-white">Foundation Course</a></li>
+                            <li><a href="/courses" class="text-gray-400 hover:text-white">All Courses</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">Contact Info</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-map-marker-alt text-blue-500 mt-1 mr-3"></i>
+                                <span class="text-gray-400">PHOTON Coaching, Varanasi, Uttar Pradesh</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-phone text-blue-500 mr-3"></i>
+                                <a href="tel:9450545318" class="text-gray-400 hover:text-white">+91 9450545318</a>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-envelope text-blue-500 mr-3"></i>
+                                <a href="mailto:info@photoncoaching.com" class="text-gray-400 hover:text-white">info@photoncoaching.com</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="border-t border-gray-800 mt-10 pt-6 text-center">
+                    <p class="text-gray-500">
+                        &copy; 2025 PHOTON Coaching Institute. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- JavaScript for Animations -->
+    <script>
+        // Scroll animation observer
+        document.addEventListener('DOMContentLoaded', function() {
+            // Header scroll effect
+            const header = document.getElementById('main-header');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('shadow-xl', 'bg-white/90', 'backdrop-blur-sm');
+                    header.classList.remove('shadow-lg');
+                } else {
+                    header.classList.remove('shadow-xl', 'bg-white/90', 'backdrop-blur-sm');
+                    header.classList.add('shadow-lg');
+                }
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('opacity-0');
+                mobileMenu.classList.toggle('invisible');
+                mobileMenu.classList.toggle('translate-y-0');
+                mobileMenu.classList.toggle('translate-y-2');
+                
+                // Rotate hamburger icon
+                const icon = mobileMenuButton.querySelector('i');
+                if (mobileMenu.classList.contains('opacity-0')) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                } else {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                }
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!header.contains(event.target) && !mobileMenu.classList.contains('opacity-0')) {
+                    mobileMenu.classList.add('opacity-0', 'invisible', 'translate-y-2');
+                    mobileMenu.classList.remove('translate-y-0');
+                    const icon = mobileMenuButton.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Faculty Portal Login Modal
+            const facultyPortalLink = document.getElementById('faculty-portal-link');
+            const mobileFacultyPortalLink = document.getElementById('mobile-faculty-portal-link');
+            const facultyLoginModal = document.getElementById('facultyLoginModal');
+            const closeFacultyModal = document.getElementById('closeFacultyModal');
+            
+            // Open modal when clicking on Faculty Portal link
+            facultyPortalLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                facultyLoginModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            });
+            
+            // Open modal when clicking on mobile Faculty Portal link
+            mobileFacultyPortalLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                facultyLoginModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                // Close mobile menu
+                mobileMenu.classList.add('opacity-0', 'invisible', 'translate-y-2');
+                mobileMenu.classList.remove('translate-y-0');
+                const icon = mobileMenuButton.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+            
+            // Close modal when clicking on close button
+            closeFacultyModal.addEventListener('click', function() {
+                facultyLoginModal.classList.add('hidden');
+                document.body.style.overflow = ''; // Re-enable scrolling
+            });
+            
+            // Close modal when clicking outside of it
+            facultyLoginModal.addEventListener('click', function(event) {
+                if (event.target === facultyLoginModal) {
+                    facultyLoginModal.classList.add('hidden');
+                    document.body.style.overflow = ''; // Re-enable scrolling
+                }
+            });
+            
+            // Handle form submission
+            const facultyLoginForm = document.getElementById('facultyLoginForm');
+            facultyLoginForm.addEventListener('submit', function(e) {
+                // Form will submit normally, but we can add any client-side validation here if needed
+            });
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade-in');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Add floating animation to elements with 'floating' class
+            const floatingElements = document.querySelectorAll('.floating');
+            floatingElements.forEach((el, index) => {
+                // Add slight delay to each element for staggered effect
+                el.style.animationDelay = `${index * 0.2}s`;
+            });
+        });
+    </script>
+</body>
+</html>

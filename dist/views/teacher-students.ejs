@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <link rel="alternate icon" type="image/x-icon" href="/images/favicon.ico">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        * { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; background: #0f172a; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Space Grotesk', sans-serif; }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glow { box-shadow: 0 0 20px rgba(96, 165, 250, 0.5), 0 0 40px rgba(96, 165, 250, 0.3); }
+    </style>
+</head>
+<body class="bg-slate-900 text-white">
+    <div class="min-h-screen pt-24 pb-12 px-4">
+        <div class="container mx-auto max-w-7xl">
+            <!-- Header -->
+            <div class="mb-12" data-aos="fade-up">
+                <a href="/teacher-dashboard" class="inline-flex items-center text-blue-400 hover:text-blue-300 mb-6 transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+                </a>
+                <h1 class="text-4xl md:text-5xl font-black mb-4">
+                    Student <span class="gradient-text">Management</span>
+                </h1>
+                <p class="text-gray-400 text-lg">View all registered students and their information</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="glass rounded-2xl p-6 text-center" data-aos="fade-up">
+                    <div class="text-4xl font-black text-blue-400 mb-2"><%= students.length %></div>
+                    <div class="text-gray-400">Total Students</div>
+                </div>
+                <div class="glass rounded-2xl p-6 text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-4xl font-black text-green-400 mb-2">
+                        <%= students.filter(s => s.course === 'jee').length %>
+                    </div>
+                    <div class="text-gray-400">JEE Students</div>
+                </div>
+                <div class="glass rounded-2xl p-6 text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-4xl font-black text-purple-400 mb-2">
+                        <%= students.filter(s => s.course === 'neet').length %>
+                    </div>
+                    <div class="text-gray-400">NEET Students</div>
+                </div>
+                <div class="glass rounded-2xl p-6 text-center" data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-4xl font-black text-pink-400 mb-2">
+                        <%= students.filter(s => s.course === 'foundation').length %>
+                    </div>
+                    <div class="text-gray-400">Foundation</div>
+                </div>
+            </div>
+
+            <!-- Students Table -->
+            <div class="glass rounded-3xl p-8" data-aos="fade-up">
+                <h2 class="text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-users text-green-400 mr-3"></i>
+                    Registered Students
+                </h2>
+                
+                <% if (students && students.length > 0) { %>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-white/10">
+                                <th class="text-left py-4 px-4 text-gray-400 font-semibold">#</th>
+                                <th class="text-left py-4 px-4 text-gray-400 font-semibold">Photon ID</th>
+                                <th class="text-left py-4 px-4 text-gray-400 font-semibold">Name</th>
+                                <th class="text-left py-4 px-4 text-gray-400 font-semibold">Email</th>
+                                <th class="text-left py-4 px-4 text-gray-400 font-semibold">Phone</th>
+                                <th class="text-left py-4 px-4 text-gray-400 font-semibold">Class</th>
+                                <th class="text-left py-4 px-4 text-gray-400 font-semibold">Course</th>
+                                <th class="text-left py-4 px-4 text-gray-400 font-semibold">Registered</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% students.forEach((student, index) => { %>
+                            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                                <td class="py-4 px-4 text-gray-300"><%= index + 1 %></td>
+                                <td class="py-4 px-4">
+                                    <span class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm font-semibold">
+                                        <%= student.photon_id %>
+                                    </span>
+                                </td>
+                                <td class="py-4 px-4 font-semibold"><%= student.name %></td>
+                                <td class="py-4 px-4 text-gray-400"><%= student.email %></td>
+                                <td class="py-4 px-4 text-gray-400"><%= student.phone || 'N/A' %></td>
+                                <td class="py-4 px-4">
+                                    <span class="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-lg text-sm">
+                                        <%= student.class || 'N/A' %>
+                                    </span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <span class="px-3 py-1 rounded-lg text-sm font-semibold
+                                        <% if (student.course === 'jee') { %>
+                                            bg-green-500/20 text-green-400
+                                        <% } else if (student.course === 'neet') { %>
+                                            bg-pink-500/20 text-pink-400
+                                        <% } else if (student.course === 'foundation') { %>
+                                            bg-orange-500/20 text-orange-400
+                                        <% } else { %>
+                                            bg-gray-500/20 text-gray-400
+                                        <% } %>
+                                    ">
+                                        <%= student.course ? student.course.toUpperCase() : 'N/A' %>
+                                    </span>
+                                </td>
+                                <td class="py-4 px-4 text-gray-400 text-sm">
+                                    <%= new Date(student.created_at).toLocaleDateString() %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+                <% } else { %>
+                <!-- Empty State -->
+                <div class="text-center py-12 text-gray-500">
+                    <i class="fas fa-user-slash text-6xl mb-4 opacity-50"></i>
+                    <p class="text-lg">No students registered yet</p>
+                    <p class="text-sm">Students will appear here once they register</p>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true });
+    </script>
+</body>
+</html>

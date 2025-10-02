@@ -7,7 +7,7 @@ node_modules/
 .env.production
 
 # Build output
-dist/
+# dist/ - Commented out so Vercel can use pre-built files
 
 # Uploads (local files) - keep folder but ignore contents
 uploads/*

@@ -1,0 +1,116 @@
+/* Custom Styles for Photon Coaching */
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+}
+
+/* Buttons */
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Cards */
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Navigation */
+.navbar-brand img {
+    max-height: 50px;
+}
+
+.nav-link {
+    font-weight: 500;
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #3b82f6;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Footer */
+footer ul li {
+    transition: all 0.3s ease;
+}
+
+footer ul li:hover {
+    transform: translateX(5px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section .btn {
+        margin-bottom: 10px;
+    }
+    
+    .md\:col-span-3 {
+        grid-column: span 1;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Testimonials */
+.testimonial-card {
+    position: relative;
+}
+
+.testimonial-card::before {
+    content: """;
+    position: absolute;
+    top: -20px;
+    left: 10px;
+    font-size: 5rem;
+    color: #dbeafe;
+    font-family: Georgia, serif;
+    line-height: 1;
+}
+
+/* Utility Classes */
+.text-primary {
+    color: #1e40af;
+}
+
+.bg-primary {
+    background-color: #1e40af;
+}
+
+.border-primary {
+    border-color: #1e40af;
+}
