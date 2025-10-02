@@ -554,7 +554,9 @@
                     description: document.getElementById('testDescription').value,
                     subject: document.getElementById('testSubject').value,
                     duration: document.getElementById('testDuration').value,
-                    scheduled_date: document.getElementById('testDate').value
+                    scheduled_date: document.getElementById('testDate').value,
+                    start_time: document.getElementById('startTime').value || null,
+                    end_time: document.getElementById('endTime').value || null
                 };
                 
                 // Validate required fields
