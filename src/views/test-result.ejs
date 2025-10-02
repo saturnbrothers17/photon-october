@@ -216,7 +216,7 @@
                                             data-options='<%- JSON.stringify(question.options.map(o => o.option_text)) %>'
                                             data-correct-answer="<%= correctIndex %>"
                                             data-user-answer="<%= userAnswer %>">
-                                            <i class="fas fa-robot mr-2"></i> Get AI Detailed Solution
+                                            <i class="fas fa-robot mr-2"></i> Niko Solution
                                         </button>
                                         
                                         <!-- AI Solution Container -->
@@ -307,7 +307,7 @@
                 // Check if solution already loaded
                 if (!solutionDiv.classList.contains('hidden')) {
                     solutionDiv.classList.add('hidden');
-                    this.innerHTML = '<i class="fas fa-robot mr-2"></i> Get AI Detailed Solution';
+                    this.innerHTML = '<i class="fas fa-robot mr-2"></i> Niko Solution';
                     return;
                 }
                 
