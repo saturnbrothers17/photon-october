@@ -334,13 +334,15 @@ export async function createTest(testData: {
     description: string; 
     subject: string; 
     duration: number; 
-    scheduled_date?: string; 
+    scheduled_date?: string;
+    start_time?: string;
+    end_time?: string;
     created_by: number 
 }) {
     try {
         const result = await client.execute({
-            sql: 'INSERT INTO tests (title, description, subject, duration, scheduled_date, created_by) VALUES (?, ?, ?, ?, ?, ?)',
-            args: [testData.title, testData.description, testData.subject, testData.duration, testData.scheduled_date || null, testData.created_by]
+            sql: 'INSERT INTO tests (title, description, subject, duration, scheduled_date, start_time, end_time, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            args: [testData.title, testData.description, testData.subject, testData.duration, testData.scheduled_date || null, testData.start_time || null, testData.end_time || null, testData.created_by]
         });
         return result;
     } catch (error) {
@@ -602,6 +604,37 @@ export async function deleteStudyMaterial(id: number) {
     } catch (error) {
         console.error('Error deleting study material:', error);
         throw error;
+    }
+}
+
+// Function to get tests with scheduling status for students
+export async function getTestsWithStatus() {
+    try {
+        const result = await client.execute(`
+            SELECT 
+                id, 
+                title, 
+                description, 
+                subject, 
+                duration, 
+                scheduled_date,
+                start_time,
+                end_time,
+                created_at,
+                CASE 
+                    WHEN start_time IS NULL OR end_time IS NULL THEN 'available'
+                    WHEN datetime('now') < start_time THEN 'scheduled'
+                    WHEN datetime('now') BETWEEN start_time AND end_time THEN 'live'
+                    WHEN datetime('now') > end_time THEN 'ended'
+                    ELSE 'available'
+                END as status
+            FROM tests 
+            ORDER BY created_at DESC
+        `);
+        return result.rows;
+    } catch (error) {
+        console.error('Error fetching tests with status:', error);
+        return [];
     }
 }
 

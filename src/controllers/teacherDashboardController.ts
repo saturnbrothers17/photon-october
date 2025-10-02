@@ -256,7 +256,7 @@ export const createTestInitHandler = async (req: Request, res: Response) => {
     }
     
     try {
-        const { title, description, subject, duration, scheduled_date } = req.body;
+        const { title, description, subject, duration, scheduled_date, start_time, end_time } = req.body;
         
         // Validate required fields
         if (!title || !subject || !duration) {
@@ -272,6 +272,8 @@ export const createTestInitHandler = async (req: Request, res: Response) => {
             subject,
             duration: parseInt(duration),
             scheduled_date: scheduled_date || null,
+            start_time: start_time || null,
+            end_time: end_time || null,
             created_by: 1 // TODO: Get actual user ID from session
         });
         
