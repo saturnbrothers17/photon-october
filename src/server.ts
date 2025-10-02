@@ -6,11 +6,11 @@ import { initializeDatabase } from './database';
 const app = express();
 const PORT = Number(process.env.PORT) || 7000;
 
-// Middleware
-app.use(express.json());
+// Middleware - Increase payload limit for large test creation
+app.use(express.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads'))); // Serve uploaded files
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser()); // Add cookie parser middleware
 
 // Set view engine

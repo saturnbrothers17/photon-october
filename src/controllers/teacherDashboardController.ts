@@ -244,3 +244,133 @@ export const getTestPerformanceData = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Failed to load performance data' });
     }
 };
+
+// Chunked Upload Handlers
+
+// Step 1: Initialize test and return test_id
+export const createTestInitHandler = async (req: Request, res: Response) => {
+    const user = getUserFromCookie(req);
+    
+    if (!user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    
+    try {
+        const { title, description, subject, duration, scheduled_date } = req.body;
+        
+        // Validate required fields
+        if (!title || !subject || !duration) {
+            return res.status(400).json({ 
+                error: 'Missing required fields: title, subject, duration' 
+            });
+        }
+        
+        // Create the test in the database
+        const testResult = await createTest({
+            title,
+            description: description || '',
+            subject,
+            duration: parseInt(duration),
+            scheduled_date: scheduled_date || null,
+            created_by: 1 // TODO: Get actual user ID from session
+        });
+        
+        const testId = Number(testResult.lastInsertRowid);
+        
+        res.json({
+            success: true,
+            test_id: testId,
+            message: 'Test initialized successfully'
+        });
+    } catch (error) {
+        console.error('Error initializing test:', error);
+        res.status(500).json({ 
+            error: 'Failed to initialize test',
+            details: error instanceof Error ? error.message : 'Unknown error'
+        });
+    }
+};
+
+// Step 2: Add a single question with options
+export const addQuestionHandler = async (req: Request, res: Response) => {
+    const user = getUserFromCookie(req);
+    
+    if (!user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    
+    try {
+        const { test_id, question_text, diagram, explanation, difficulty, options } = req.body;
+        
+        // Validate required fields
+        if (!test_id || !question_text || !options || !Array.isArray(options)) {
+            return res.status(400).json({ 
+                error: 'Missing required fields: test_id, question_text, options' 
+            });
+        }
+        
+        // Add question to database
+        const questionResult = await addQuestion({
+            test_id: parseInt(test_id),
+            question_text,
+            explanation: explanation || '',
+            difficulty: difficulty || 'medium',
+            diagram: diagram || null
+        });
+        
+        const questionId = Number(questionResult.lastInsertRowid);
+        
+        // Add options
+        for (const option of options) {
+            await addOption({
+                question_id: questionId,
+                option_text: option.text,
+                is_correct: option.is_correct
+            });
+        }
+        
+        res.json({
+            success: true,
+            question_id: questionId,
+            message: 'Question added successfully'
+        });
+    } catch (error) {
+        console.error('Error adding question:', error);
+        res.status(500).json({ 
+            error: 'Failed to add question',
+            details: error instanceof Error ? error.message : 'Unknown error'
+        });
+    }
+};
+
+// Step 3: Finalize test (optional - for validation)
+export const finalizeTestHandler = async (req: Request, res: Response) => {
+    const user = getUserFromCookie(req);
+    
+    if (!user) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    
+    try {
+        const { test_id } = req.body;
+        
+        if (!test_id) {
+            return res.status(400).json({ error: 'Missing test_id' });
+        }
+        
+        // Optional: Add validation logic here
+        // For example, check if test has at least one question
+        
+        res.json({
+            success: true,
+            message: 'Test finalized successfully',
+            test_id: parseInt(test_id)
+        });
+    } catch (error) {
+        console.error('Error finalizing test:', error);
+        res.status(500).json({ 
+            error: 'Failed to finalize test',
+            details: error instanceof Error ? error.message : 'Unknown error'
+        });
+    }
+};
