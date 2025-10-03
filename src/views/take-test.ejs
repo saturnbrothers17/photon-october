@@ -422,6 +422,9 @@
         async function submitTest() {
             clearInterval(timerInterval);
             
+            // Remove beforeunload listener to prevent "Leave site?" popup
+            window.removeEventListener('beforeunload', beforeUnloadHandler);
+            
             // Calculate score
             let correctAnswers = 0;
             testData.questions.forEach((question, index) => {
@@ -458,7 +461,8 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    window.location.href = data.redirectUrl;
+                    // Direct navigation without popup
+                    window.location.replace(data.redirectUrl);
                 } else {
                     alert('Failed to submit test. Please try again.');
                 }
@@ -473,11 +477,13 @@
             submitTest();
         }
         
-        // Prevent accidental page close
-        window.addEventListener('beforeunload', (e) => {
+        // Prevent accidental page close during test
+        const beforeUnloadHandler = (e) => {
             e.preventDefault();
             e.returnValue = '';
-        });
+        };
+        
+        window.addEventListener('beforeunload', beforeUnloadHandler);
     </script>
 </body>
 </html>
