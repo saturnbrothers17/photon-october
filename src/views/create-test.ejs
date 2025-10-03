@@ -659,6 +659,15 @@
                         try {
                             const errorJson = JSON.parse(errorText);
                             errorMessage = errorJson.error || errorMessage;
+                            
+                            // Check if it's an authentication error
+                            if (errorMessage.toLowerCase().includes('unauthorized') || errorMessage.toLowerCase().includes('log in')) {
+                                errorMessage = 'Session expired. Please log in again as faculty.';
+                                // Redirect to faculty login after a short delay
+                                setTimeout(() => {
+                                    window.location.href = '/auth/faculty-login?redirect=' + encodeURIComponent(window.location.pathname);
+                                }, 3000);
+                            }
                         } catch (e) {
                             // If not JSON, check if it's HTML (authentication redirect)
                             if (errorText.includes('<!DOCTYPE') || errorText.includes('<html>')) {

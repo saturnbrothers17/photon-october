@@ -19,6 +19,7 @@ exports.getTestWithQuestions = getTestWithQuestions;
 exports.saveTestResult = saveTestResult;
 exports.getTestResult = getTestResult;
 exports.getTestResults = getTestResults;
+exports.getStudentTestResults = getStudentTestResults;
 exports.getStudentRank = getStudentRank;
 exports.getPerformanceAnalytics = getPerformanceAnalytics;
 exports.getTestPerformanceDetails = getTestPerformanceDetails;
@@ -173,10 +174,32 @@ async function initializeDatabase() {
                 total_questions INTEGER NOT NULL,
                 time_taken INTEGER,
                 answers TEXT,
+                test_title TEXT,
+                test_subject TEXT,
+                test_max_marks INTEGER,
                 submitted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (test_id) REFERENCES tests(id) ON DELETE CASCADE
+                FOREIGN KEY (test_id) REFERENCES tests(id) ON DELETE SET NULL
             )
         `);
+        // Add missing columns to existing test_results table if they don't exist
+        try {
+            await client.execute(`ALTER TABLE test_results ADD COLUMN test_title TEXT`);
+        }
+        catch (e) {
+            // Column already exists, ignore
+        }
+        try {
+            await client.execute(`ALTER TABLE test_results ADD COLUMN test_subject TEXT`);
+        }
+        catch (e) {
+            // Column already exists, ignore
+        }
+        try {
+            await client.execute(`ALTER TABLE test_results ADD COLUMN test_max_marks INTEGER`);
+        }
+        catch (e) {
+            // Column already exists, ignore
+        }
         // Create study_materials table
         await client.execute(`
             CREATE TABLE IF NOT EXISTS study_materials (
@@ -441,8 +464,27 @@ async function getTestWithQuestions(testId) {
 // Function to save test result
 async function saveTestResult(resultData) {
     try {
+        // First, get the test details to store with the result
+        let testTitle = 'Unknown Test';
+        let testSubject = 'Unknown Subject';
+        let testMaxMarks = resultData.max_marks || 0;
+        try {
+            const testDetails = await client.execute({
+                sql: 'SELECT title, subject, max_marks FROM tests WHERE id = ?',
+                args: [resultData.test_id]
+            });
+            if (testDetails.rows.length > 0) {
+                const test = testDetails.rows[0];
+                testTitle = test.title || 'Unknown Test';
+                testSubject = test.subject || 'Unknown Subject';
+                testMaxMarks = test.max_marks || resultData.max_marks || 0;
+            }
+        }
+        catch (testError) {
+            console.warn('Could not fetch test details, using defaults:', testError);
+        }
         const result = await client.execute({
-            sql: 'INSERT INTO test_results (test_id, student_id, student_name, score, correct_answers, total_questions, time_taken, answers, numerical_score, wrong_answers, max_marks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            sql: 'INSERT INTO test_results (test_id, student_id, student_name, score, correct_answers, total_questions, time_taken, answers, test_title, test_subject, test_max_marks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
             args: [
                 resultData.test_id,
                 resultData.student_id,
@@ -452,9 +494,9 @@ async function saveTestResult(resultData) {
                 resultData.total_questions,
                 resultData.time_taken,
                 resultData.answers,
-                resultData.numerical_score || 0,
-                resultData.wrong_answers || 0,
-                resultData.max_marks || 0
+                testTitle,
+                testSubject,
+                testMaxMarks
             ]
         });
         return result;
@@ -489,6 +531,37 @@ async function getTestResults(testId) {
     }
     catch (error) {
         console.error('Error getting test results:', error);
+        throw error;
+    }
+}
+// Function to get all test results for a student (including deleted tests)
+async function getStudentTestResults(studentId) {
+    try {
+        const result = await client.execute({
+            sql: `SELECT 
+                tr.*,
+                CASE 
+                    WHEN t.id IS NOT NULL THEN t.title 
+                    ELSE tr.test_title 
+                END as display_title,
+                CASE 
+                    WHEN t.id IS NOT NULL THEN t.subject 
+                    ELSE tr.test_subject 
+                END as display_subject,
+                CASE 
+                    WHEN t.id IS NOT NULL THEN 'active' 
+                    ELSE 'deleted' 
+                END as test_status
+            FROM test_results tr 
+            LEFT JOIN tests t ON tr.test_id = t.id 
+            WHERE tr.student_id = ? 
+            ORDER BY tr.submitted_at DESC`,
+            args: [studentId]
+        });
+        return result.rows;
+    }
+    catch (error) {
+        console.error('Error getting student test results:', error);
         throw error;
     }
 }

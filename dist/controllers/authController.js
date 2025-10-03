@@ -4,7 +4,13 @@ exports.getUserFromCookie = exports.getUser = exports.requireAuthAPI = exports.r
 const database_1 = require("../database");
 // Simple cookie-based authentication for demo purposes
 const setUserCookie = (res, photon_id, name, role = 'student') => {
-    res.cookie('user', JSON.stringify({ photon_id, name, role }), { maxAge: 900000, httpOnly: true });
+    // Set cookie to expire in 24 hours (24 * 60 * 60 * 1000 = 86400000 ms)
+    res.cookie('user', JSON.stringify({ photon_id, name, role }), {
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+        sameSite: 'lax' // Help prevent CSRF attacks
+    });
 };
 const clearUserCookie = (res) => {
     res.clearCookie('user');
