@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserFromCookie = exports.getUser = exports.requireAuth = exports.handleLogout = exports.handleRegister = exports.handleLogin = exports.handleFacultyLogin = exports.showFacultyLogin = exports.showRegister = exports.showLogin = void 0;
+exports.getUserFromCookie = exports.getUser = exports.requireAuthAPI = exports.requireAuth = exports.handleLogout = exports.handleRegister = exports.handleLogin = exports.handleFacultyLogin = exports.showFacultyLogin = exports.showRegister = exports.showLogin = void 0;
 const database_1 = require("../database");
 // Simple cookie-based authentication for demo purposes
 const setUserCookie = (res, photon_id, name, role = 'student') => {
@@ -251,10 +251,29 @@ const requireAuth = (req, res, next) => {
         next();
     }
     else {
-        res.redirect('/auth/login');
+        // Check if this is an API request (JSON expected)
+        const isApiRequest = req.path.includes('/api/') || req.headers.accept?.includes('application/json');
+        if (isApiRequest) {
+            return res.status(401).json({ error: 'Unauthorized. Please log in.' });
+        }
+        else {
+            res.redirect('/auth/login');
+        }
     }
 };
 exports.requireAuth = requireAuth;
+// API-specific auth middleware that always returns JSON
+const requireAuthAPI = (req, res, next) => {
+    const user = getUserFromCookie(req);
+    if (user) {
+        req.user = user;
+        next();
+    }
+    else {
+        return res.status(401).json({ error: 'Unauthorized. Please log in.' });
+    }
+};
+exports.requireAuthAPI = requireAuthAPI;
 const getUser = (req) => {
     return getUserFromCookie(req);
 };

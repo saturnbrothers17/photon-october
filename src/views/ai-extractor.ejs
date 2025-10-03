@@ -183,24 +183,25 @@
         <div class="container mx-auto px-4 py-12">
             <div class="text-center mb-12 animate-on-scroll">
                 <h1 class="text-3xl md:text-4xl font-bold mb-4">AI Question Extractor</h1>
-                <p class="text-xl text-gray-600">Upload images containing questions and let our AI extract them for you</p>
+                <p class="text-xl text-gray-600">Upload images or Word documents containing questions and let our AI extract them for you</p>
             </div>
             
             <div class="max-w-4xl mx-auto">
                 <!-- Upload Section -->
                 <div class="bg-white rounded-xl shadow-md p-8 mb-8 animate-on-scroll">
-                    <h2 class="text-2xl font-bold mb-6 text-gray-900">Upload Question Image</h2>
+                    <h2 class="text-2xl font-bold mb-6 text-gray-900">Upload Questions (Image or Word Document)</h2>
                     
                     <form id="uploadForm" enctype="multipart/form-data">
                         <div class="upload-area p-8 text-center mb-6" id="dropZone">
                             <i class="fas fa-cloud-upload-alt text-4xl text-blue-500 mb-4"></i>
-                            <h3 class="text-xl font-semibold mb-2">Drag & Drop your image here</h3>
+                            <h3 class="text-xl font-semibold mb-2">Drag & Drop your file here</h3>
+                            <p class="text-gray-500 text-sm mb-2">Supports: Images (JPG, PNG) & Word Documents (.docx)</p>
                             <p class="text-gray-600 mb-4">or</p>
-                            <input type="file" id="questionImage" name="questionImage" accept="image/*" class="hidden">
+                            <input type="file" id="questionImage" name="questionImage" accept="image/*,.docx,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword" class="hidden">
                             <button type="button" id="browseButton" class="btn-primary py-2 px-6 rounded-lg font-bold">
                                 Browse Files
                             </button>
-                            <p class="text-gray-500 text-sm mt-4">Supports JPG, PNG, GIF (Max 5MB)</p>
+                            <p class="text-gray-500 text-sm mt-4">Max file size: 10MB</p>
                         </div>
                         
                         <div id="previewContainer" class="mb-6 hidden">
@@ -335,7 +336,7 @@
             function handleFileSelect(e) {
                 const file = e.target.files[0];
                 if (file) {
-                    previewImage(file);
+                    previewFile(file);
                 }
             }
             
@@ -354,21 +355,52 @@
                 dropZone.classList.remove('dragover');
                 
                 const file = e.dataTransfer.files[0];
-                if (file && file.type.startsWith('image/')) {
-                    fileInput.files = e.dataTransfer.files;
-                    previewImage(file);
-                } else {
-                    showError('Please drop an image file.');
+                if (file) {
+                    const isImage = file.type.startsWith('image/');
+                    const isWord = file.type.includes('word') || file.type.includes('document') || file.name.endsWith('.docx') || file.name.endsWith('.doc');
+                    
+                    if (isImage || isWord) {
+                        fileInput.files = e.dataTransfer.files;
+                        previewFile(file);
+                    } else {
+                        showError('Please drop an image or Word document file.');
+                    }
                 }
             }
             
-            function previewImage(file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    imagePreview.src = e.target.result;
+            function previewFile(file) {
+                const isImage = file.type.startsWith('image/');
+                const isWord = file.type.includes('word') || file.type.includes('document') || file.name.endsWith('.docx') || file.name.endsWith('.doc');
+                
+                if (isImage) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                        previewContainer.classList.remove('hidden');
+                        // Remove any existing Word file info
+                        const existingInfo = previewContainer.querySelector('.bg-blue-50');
+                        if (existingInfo) existingInfo.remove();
+                    };
+                    reader.readAsDataURL(file);
+                } else if (isWord) {
+                    // Show file name for Word documents
                     previewContainer.classList.remove('hidden');
-                };
-                reader.readAsDataURL(file);
+                    imagePreview.style.display = 'none';
+                    
+                    // Remove any existing Word file info
+                    const existingInfo = previewContainer.querySelector('.bg-blue-50');
+                    if (existingInfo) existingInfo.remove();
+                    
+                    const fileInfo = document.createElement('div');
+                    fileInfo.className = 'text-center p-6 bg-blue-50 rounded-lg';
+                    fileInfo.innerHTML = `
+                        <i class="fas fa-file-word text-5xl text-blue-600 mb-3"></i>
+                        <p class="font-semibold text-gray-800">${file.name}</p>
+                        <p class="text-sm text-gray-600 mt-1">${(file.size / 1024).toFixed(2)} KB</p>
+                    `;
+                    previewContainer.appendChild(fileInfo);
+                }
             }
             
             function handleFormSubmit(e) {
@@ -376,7 +408,7 @@
                 
                 const file = fileInput.files[0];
                 if (!file) {
-                    showError('Please select an image file.');
+                    showError('Please select an image or Word document file.');
                     return;
                 }
                 

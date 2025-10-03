@@ -651,10 +651,31 @@
                     });
                     
                     if (!initResponse.ok) {
-                        throw new Error('Failed to initialize test');
+                        const errorText = await initResponse.text();
+                        console.error('Init response error:', errorText);
+                        
+                        // Try to parse as JSON first, fallback to text
+                        let errorMessage = 'Failed to initialize test';
+                        try {
+                            const errorJson = JSON.parse(errorText);
+                            errorMessage = errorJson.error || errorMessage;
+                        } catch (e) {
+                            // If not JSON, check if it's HTML (authentication redirect)
+                            if (errorText.includes('<!DOCTYPE') || errorText.includes('<html>')) {
+                                errorMessage = 'Authentication required. Please log in again.';
+                                // Redirect to login after a short delay
+                                setTimeout(() => {
+                                    window.location.href = '/auth/faculty-login?redirect=' + encodeURIComponent(window.location.pathname);
+                                }, 2000);
+                            } else {
+                                errorMessage = errorText || errorMessage;
+                            }
+                        }
+                        throw new Error(errorMessage);
                     }
                     
-                    const { test_id } = await initResponse.json();
+                    const initResult = await initResponse.json();
+                    const { test_id } = initResult;
                     
                     // Step 2: Upload questions one by one with retry logic
                     const failedQuestions = [];
@@ -685,7 +706,22 @@
                                 
                                 if (!questionResponse.ok) {
                                     const errorText = await questionResponse.text();
-                                    throw new Error(`HTTP ${questionResponse.status}: ${errorText}`);
+                                    console.error('Question response error:', errorText);
+                                    
+                                    // Try to parse as JSON first, fallback to text
+                                    let errorMessage = `HTTP ${questionResponse.status}`;
+                                    try {
+                                        const errorJson = JSON.parse(errorText);
+                                        errorMessage = errorJson.error || errorMessage;
+                                    } catch (e) {
+                                        // If not JSON, check if it's HTML (authentication redirect)
+                                        if (errorText.includes('<!DOCTYPE') || errorText.includes('<html>')) {
+                                            errorMessage = 'Authentication required. Please log in again.';
+                                        } else {
+                                            errorMessage = errorText || errorMessage;
+                                        }
+                                    }
+                                    throw new Error(errorMessage);
                                 }
                                 
                                 const result = await questionResponse.json();

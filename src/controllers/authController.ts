@@ -260,7 +260,25 @@ export const requireAuth = (req: Request, res: Response, next: Function) => {
         (req as any).user = user;
         next();
     } else {
-        res.redirect('/auth/login');
+        // Check if this is an API request (JSON expected)
+        const isApiRequest = req.path.includes('/api/') || req.headers.accept?.includes('application/json');
+        
+        if (isApiRequest) {
+            return res.status(401).json({ error: 'Unauthorized. Please log in.' });
+        } else {
+            res.redirect('/auth/login');
+        }
+    }
+};
+
+// API-specific auth middleware that always returns JSON
+export const requireAuthAPI = (req: Request, res: Response, next: Function) => {
+    const user = getUserFromCookie(req);
+    if (user) {
+        (req as any).user = user;
+        next();
+    } else {
+        return res.status(401).json({ error: 'Unauthorized. Please log in.' });
     }
 };
 

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import multer from 'multer';
 import sharp from 'sharp';
+import mammoth from 'mammoth';
 import { getUserFromCookie } from './authController';
 
 // Configure multer for file uploads
@@ -8,11 +9,22 @@ const storage = multer.memoryStorage();
 const upload = multer({ 
     storage: storage,
     limits: {
-        fileSize: 5 * 1024 * 1024 // 5MB limit
+        fileSize: 10 * 1024 * 1024 // 10MB limit for Word documents
     },
     fileFilter: (req, file, cb) => {
-        if (file.mimetype.startsWith('image/')) {
+        const allowedMimeTypes = [
+            'image/jpeg',
+            'image/png',
+            'image/jpg',
+            'image/webp',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+            'application/msword' // .doc
+        ];
+        
+        if (allowedMimeTypes.includes(file.mimetype)) {
             cb(null, true);
+        } else {
+            cb(new Error('Invalid file type. Only images and Word documents are allowed.'));
         }
     }
 });
@@ -335,6 +347,98 @@ export const getAIExtractorPage = (req: Request, res: Response) => {
     });
 };
 
+// Function to extract text from Word document
+async function extractTextFromWord(buffer: Buffer): Promise<string> {
+    try {
+        console.log('Extracting text from Word document...');
+        const result = await mammoth.extractRawText({ buffer });
+        console.log('Text extracted successfully from Word document');
+        console.log('Extracted text length:', result.value.length, 'characters');
+        return result.value;
+    } catch (error) {
+        console.error('Error extracting text from Word:', error);
+        throw new Error('Failed to extract text from Word document');
+    }
+}
+
+// Function to extract questions from text using AI
+async function extractQuestionsFromText(text: string): Promise<any[]> {
+    try {
+        console.log('Extracting questions from text using Google Gemini AI...');
+        
+        const prompt = `You are an expert at extracting MCQ questions from text content.
+
+Extract ALL MCQ questions from the following text and return them in JSON format.
+
+IMPORTANT: For mathematical notation, use simple Unicode symbols and clear formatting:
+- Use × for multiplication
+- Use ÷ for division  
+- Use ² ³ for superscripts where possible
+- Use subscripts: ₁ ₂ ₃
+- Write matrices clearly: [[1, 0], [0, 1]] or as text
+- Keep equations readable: Q - 2I, Q - 6I, etc.
+
+Return JSON array with this exact structure:
+[
+  {
+    "text": "Complete question text with clear mathematical notation",
+    "options": ["Option A", "Option B", "Option C", "Option D"],
+    "correctOption": 0,
+    "explanation": "Brief explanation",
+    "difficulty": "easy"
+  }
+]
+
+Text to extract from:
+${text}
+
+Return ONLY the JSON array. No markdown, no code blocks, no extra text.`;
+        
+        console.log('Calling Gemini 2.0 Flash API for text extraction...');
+        const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{ text: prompt }]
+                }]
+            })
+        });
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Gemini API Error:', errorText);
+            throw new Error(`Gemini API error: ${response.status}`);
+        }
+        
+        const data: any = await response.json();
+        const responseText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        
+        if (!responseText) {
+            throw new Error('No response from Gemini API');
+        }
+        
+        console.log('Gemini API response received for text');
+        
+        // Parse JSON response
+        let jsonString = responseText.trim();
+        if (jsonString.startsWith('```json')) jsonString = jsonString.substring(7);
+        if (jsonString.startsWith('```')) jsonString = jsonString.substring(3);
+        if (jsonString.endsWith('```')) jsonString = jsonString.substring(0, jsonString.length - 3);
+        jsonString = jsonString.trim();
+        
+        const questions = JSON.parse(jsonString);
+        console.log(`✅ Successfully extracted ${questions.length} questions from text using Gemini AI`);
+        
+        return questions;
+    } catch (error) {
+        console.error('Error extracting questions from text:', error);
+        // Fallback to basic text parsing
+        console.log('Falling back to basic text parsing...');
+        return parseQuestionsFromText(text);
+    }
+}
+
 export const uploadImage = upload.single('image');
 
 export const processImage = async (req: Request, res: Response) => {
@@ -349,27 +453,46 @@ export const processImage = async (req: Request, res: Response) => {
         
         // Check if file was uploaded
         if (!req.file) {
-            return res.status(400).json({ error: 'No image file provided' });
+            return res.status(400).json({ error: 'No file provided' });
         }
         
-        console.log('Received image file for processing');
+        console.log('Received file for processing');
         console.log('File details:', {
             originalname: req.file.originalname,
             mimetype: req.file.mimetype,
             size: req.file.size
         });
         
-        // Process the image (resize, optimize, etc.)
-        const processedImage = await sharp(req.file.buffer)
-            .resize(1200, null, { withoutEnlargement: true })
-            .jpeg({ quality: 80 })
-            .toBuffer();
+        let extractedQuestions: any[] = [];
         
-        console.log('Image processed successfully');
-        console.log('Processed image size:', processedImage.length, 'bytes');
-        
-        // Extract questions using AI
-        const extractedQuestions = await extractQuestionsFromImage(processedImage);
+        // Check if it's a Word document
+        if (req.file.mimetype.includes('word') || req.file.mimetype.includes('document')) {
+            console.log('Processing Word document...');
+            
+            // Extract text from Word document
+            const text = await extractTextFromWord(req.file.buffer);
+            
+            // Extract questions from text using AI
+            extractedQuestions = await extractQuestionsFromText(text);
+        } 
+        // Otherwise, process as image
+        else if (req.file.mimetype.startsWith('image/')) {
+            console.log('Processing image...');
+            
+            // Process the image (resize, optimize, etc.)
+            const processedImage = await sharp(req.file.buffer)
+                .resize(1200, null, { withoutEnlargement: true })
+                .jpeg({ quality: 80 })
+                .toBuffer();
+            
+            console.log('Image processed successfully');
+            console.log('Processed image size:', processedImage.length, 'bytes');
+            
+            // Extract questions using AI
+            extractedQuestions = await extractQuestionsFromImage(processedImage);
+        } else {
+            return res.status(400).json({ error: 'Unsupported file type' });
+        }
         
         console.log('Questions extracted successfully');
         
@@ -379,9 +502,9 @@ export const processImage = async (req: Request, res: Response) => {
             questions: extractedQuestions
         });
     } catch (error) {
-        console.error('Error processing image:', error);
+        console.error('Error processing file:', error);
         res.status(500).json({ 
-            error: 'An error occurred while processing the image',
+            error: 'An error occurred while processing the file',
             details: error instanceof Error ? error.message : 'Unknown error'
         });
     }
