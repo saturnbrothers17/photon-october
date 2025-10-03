@@ -259,9 +259,9 @@ export const createTestInitHandler = async (req: Request, res: Response) => {
         const { title, description, subject, duration, scheduled_date, start_time, end_time, testType, maxMarks } = req.body;
         
         // Validate required fields
-        if (!title || !subject || !duration) {
+        if (!title || !subject || !duration || !testType || !maxMarks) {
             return res.status(400).json({ 
-                error: 'Missing required fields: title, subject, duration' 
+                error: 'Missing required fields: title, subject, duration, testType, maxMarks' 
             });
         }
         
@@ -274,6 +274,8 @@ export const createTestInitHandler = async (req: Request, res: Response) => {
             scheduled_date: scheduled_date || null,
             start_time: start_time || null,
             end_time: end_time || null,
+            test_type: testType || 'Other',
+            max_marks: parseInt(maxMarks) || 0,
             created_by: 1 // TODO: Get actual user ID from session
         });
         
