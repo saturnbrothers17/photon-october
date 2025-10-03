@@ -149,35 +149,49 @@
             }
         }, 10000); // Check every 10 seconds
         
-        // Show countdown for scheduled tests
+        // Show countdown for scheduled tests (only if elements exist)
         function updateCountdowns() {
-            const now = new Date();
-            document.querySelectorAll('[data-start-time]').forEach(element => {
-                const startTime = new Date(element.dataset.startTime);
-                const diff = startTime - now;
+            try {
+                const now = new Date();
+                const countdownElements = document.querySelectorAll('[data-start-time]');
                 
-                if (diff > 0) {
-                    const hours = Math.floor(diff / (1000 * 60 * 60));
-                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                if (countdownElements.length === 0) return; // No scheduled tests
+                
+                countdownElements.forEach(element => {
+                    if (!element.dataset.startTime) return;
                     
-                    const countdownText = hours > 0 
-                        ? Starts in h m
-                        : minutes > 0
-                        ? Starts in m s
-                        : Starts in s;
+                    const startTime = new Date(element.dataset.startTime);
+                    if (isNaN(startTime.getTime())) return; // Invalid date
                     
-                    element.textContent = countdownText;
-                } else {
-                    // Time has passed, reload to update status
-                    location.reload();
-                }
-            });
+                    const diff = startTime - now;
+                    
+                    if (diff > 0) {
+                        const hours = Math.floor(diff / (1000 * 60 * 60));
+                        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                        
+                        const countdownText = hours > 0 
+                            ? Starts in h m
+                            : minutes > 0
+                            ? Starts in m s
+                            : Starts in s;
+                        
+                        element.textContent = countdownText;
+                    } else {
+                        // Time has passed, reload to update status
+                        location.reload();
+                    }
+                });
+            } catch (error) {
+                console.error('Countdown error:', error);
+            }
         }
         
-        // Update countdowns every second
-        setInterval(updateCountdowns, 1000);
-        updateCountdowns();
+        // Update countdowns every second (only if there are tests)
+        if (document.querySelectorAll('[data-start-time]').length > 0) {
+            setInterval(updateCountdowns, 1000);
+            updateCountdowns();
+        }
     </script>
 </body>
 </html>
