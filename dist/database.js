@@ -104,11 +104,40 @@ async function initializeDatabase() {
                 subject TEXT NOT NULL,
                 duration INTEGER NOT NULL,
                 scheduled_date DATETIME,
+                start_time TEXT,
+                end_time TEXT,
+                test_type TEXT DEFAULT 'Other',
+                max_marks INTEGER DEFAULT 0,
                 created_by INTEGER NOT NULL,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (created_by) REFERENCES users(id)
             )
         `);
+        // Add missing columns to existing tests table if they don't exist
+        try {
+            await client.execute(`ALTER TABLE tests ADD COLUMN start_time TEXT`);
+        }
+        catch (e) {
+            // Column already exists, ignore
+        }
+        try {
+            await client.execute(`ALTER TABLE tests ADD COLUMN end_time TEXT`);
+        }
+        catch (e) {
+            // Column already exists, ignore
+        }
+        try {
+            await client.execute(`ALTER TABLE tests ADD COLUMN test_type TEXT DEFAULT 'Other'`);
+        }
+        catch (e) {
+            // Column already exists, ignore
+        }
+        try {
+            await client.execute(`ALTER TABLE tests ADD COLUMN max_marks INTEGER DEFAULT 0`);
+        }
+        catch (e) {
+            // Column already exists, ignore
+        }
         // Create questions table
         await client.execute(`
             CREATE TABLE IF NOT EXISTS questions (
