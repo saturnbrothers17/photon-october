@@ -660,10 +660,9 @@ export async function getTestsWithStatus() {
                 }
             }
             
-            return {
-                ...test,
+            return Object.assign({}, test, {
                 status: status
-            };
+            });
         });
         
         return testsWithStatus;

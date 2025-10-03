@@ -598,10 +598,9 @@ async function getTestsWithStatus() {
                     status = 'ended';
                 }
             }
-            return {
-                ...test,
+            return Object.assign({}, test, {
                 status: status
-            };
+            });
         });
         return testsWithStatus;
     }
