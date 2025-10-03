@@ -171,10 +171,10 @@
                         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
                         
                         const countdownText = hours > 0 
-                            ? Starts in h m
+                            ? `Starts in ${hours}h ${minutes}m`
                             : minutes > 0
-                            ? Starts in m s
-                            : Starts in s;
+                            ? `Starts in ${minutes}m ${seconds}s`
+                            : `Starts in ${seconds}s`;
                         
                         element.textContent = countdownText;
                     } else {
