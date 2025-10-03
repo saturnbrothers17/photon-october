@@ -141,14 +141,43 @@
     <script>
         AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true });
         
-        // Update test status every minute
+        // Update test status every 10 seconds for real-time updates
         setInterval(function() {
             // Reload page to get updated test statuses
-            // In a production app, you'd use AJAX to update just the status
             if (document.visibilityState === 'visible') {
                 location.reload();
             }
-        }, 60000); // Check every minute
+        }, 10000); // Check every 10 seconds
+        
+        // Show countdown for scheduled tests
+        function updateCountdowns() {
+            const now = new Date();
+            document.querySelectorAll('[data-start-time]').forEach(element => {
+                const startTime = new Date(element.dataset.startTime);
+                const diff = startTime - now;
+                
+                if (diff > 0) {
+                    const hours = Math.floor(diff / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                    
+                    const countdownText = hours > 0 
+                        ? Starts in h m
+                        : minutes > 0
+                        ? Starts in m s
+                        : Starts in s;
+                    
+                    element.textContent = countdownText;
+                } else {
+                    // Time has passed, reload to update status
+                    location.reload();
+                }
+            });
+        }
+        
+        // Update countdowns every second
+        setInterval(updateCountdowns, 1000);
+        updateCountdowns();
     </script>
 </body>
 </html>
