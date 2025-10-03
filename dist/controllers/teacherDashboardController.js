@@ -229,7 +229,7 @@ const createTestInitHandler = async (req, res) => {
         return res.status(401).json({ error: 'Unauthorized' });
     }
     try {
-        const { title, description, subject, duration, scheduled_date, start_time, end_time } = req.body;
+        const { title, description, subject, duration, scheduled_date, start_time, end_time, testType, maxMarks } = req.body;
         // Validate required fields
         if (!title || !subject || !duration) {
             return res.status(400).json({

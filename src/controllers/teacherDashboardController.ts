@@ -256,7 +256,7 @@ export const createTestInitHandler = async (req: Request, res: Response) => {
     }
     
     try {
-        const { title, description, subject, duration, scheduled_date, start_time, end_time } = req.body;
+        const { title, description, subject, duration, scheduled_date, start_time, end_time, testType, maxMarks } = req.body;
         
         // Validate required fields
         if (!title || !subject || !duration) {

@@ -337,12 +337,14 @@ export async function createTest(testData: {
     scheduled_date?: string;
     start_time?: string;
     end_time?: string;
+    test_type?: string;
+    max_marks?: number;
     created_by: number 
 }) {
     try {
         const result = await client.execute({
-            sql: 'INSERT INTO tests (title, description, subject, duration, scheduled_date, start_time, end_time, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-            args: [testData.title, testData.description, testData.subject, testData.duration, testData.scheduled_date || null, testData.start_time || null, testData.end_time || null, testData.created_by]
+            sql: 'INSERT INTO tests (title, description, subject, duration, scheduled_date, start_time, end_time, test_type, max_marks, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            args: [testData.title, testData.description, testData.subject, testData.duration, testData.scheduled_date || null, testData.start_time || null, testData.end_time || null, testData.test_type || 'Other', testData.max_marks || 0, testData.created_by]
         });
         return result;
     } catch (error) {
