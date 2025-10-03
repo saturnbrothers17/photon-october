@@ -55,15 +55,26 @@
 
             <!-- Score Card -->
             <div class="glass rounded-3xl p-8 mb-8">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <!-- Score -->
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+                    <!-- Percentage Score -->
                     <div class="text-center">
                         <div class="text-6xl font-black mb-2">
                             <span class="<%= result.score >= 75 ? 'text-green-400' : result.score >= 50 ? 'text-yellow-400' : 'text-red-400' %>">
                                 <%= result.score.toFixed(1) %>%
                             </span>
                         </div>
-                        <p class="text-gray-400">Your Score</p>
+                        <p class="text-gray-400">Percentage</p>
+                    </div>
+                    
+                    <!-- Numerical Score -->
+                    <div class="text-center">
+                        <div class="text-6xl font-black mb-2">
+                            <span class="<%= (result.numerical_score || 0) >= (result.max_marks || 0) * 0.75 ? 'text-green-400' : (result.numerical_score || 0) >= (result.max_marks || 0) * 0.5 ? 'text-yellow-400' : 'text-red-400' %>">
+                                <%= result.numerical_score || 0 %>
+                            </span>
+                        </div>
+                        <p class="text-gray-400">Marks Scored</p>
+                        <p class="text-sm text-gray-500">out of <%= result.max_marks || (result.total_questions * 4) %></p>
                     </div>
                     
                     <!-- Rank -->
@@ -81,7 +92,16 @@
                             <%= result.correct_answers %>
                         </div>
                         <p class="text-gray-400">Correct</p>
-                        <p class="text-sm text-gray-500">out of <%= result.total_questions %></p>
+                        <p class="text-sm text-gray-500">+<%= result.correct_answers * 4 %> marks</p>
+                    </div>
+                    
+                    <!-- Wrong Answers -->
+                    <div class="text-center">
+                        <div class="text-6xl font-black mb-2 text-red-400">
+                            <%= result.wrong_answers || 0 %>
+                        </div>
+                        <p class="text-gray-400">Wrong</p>
+                        <p class="text-sm text-gray-500">-<%= (result.wrong_answers || 0) * 1 %> marks</p>
                     </div>
                     
                     <!-- Time Taken -->

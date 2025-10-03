@@ -456,11 +456,26 @@ export async function saveTestResult(resultData: {
     total_questions: number;
     time_taken: number;
     answers: string;
+    numerical_score?: number;
+    wrong_answers?: number;
+    max_marks?: number;
 }) {
     try {
         const result = await client.execute({
-            sql: 'INSERT INTO test_results (test_id, student_id, student_name, score, correct_answers, total_questions, time_taken, answers) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-            args: [resultData.test_id, resultData.student_id, resultData.student_name, resultData.score, resultData.correct_answers, resultData.total_questions, resultData.time_taken, resultData.answers]
+            sql: 'INSERT INTO test_results (test_id, student_id, student_name, score, correct_answers, total_questions, time_taken, answers, numerical_score, wrong_answers, max_marks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            args: [
+                resultData.test_id, 
+                resultData.student_id, 
+                resultData.student_name, 
+                resultData.score, 
+                resultData.correct_answers, 
+                resultData.total_questions, 
+                resultData.time_taken, 
+                resultData.answers,
+                resultData.numerical_score || 0,
+                resultData.wrong_answers || 0,
+                resultData.max_marks || 0
+            ]
         });
         return result;
     } catch (error) {

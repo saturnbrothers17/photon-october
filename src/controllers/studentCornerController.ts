@@ -103,17 +103,26 @@ export const submitTestHandler = async (req: Request, res: Response) => {
     }
     
     try {
-        const { testId, answers, timeTaken, score, correctAnswers, totalQuestions } = req.body;
+        const { testId, answers, timeTaken, score, correctAnswers, totalQuestions, wrongAnswers } = req.body;
+        
+        // Calculate numerical score: +4 for correct, -1 for wrong
+        const correctCount = parseInt(correctAnswers);
+        const wrongCount = parseInt(wrongAnswers || 0);
+        const numericalScore = (correctCount * 4) - (wrongCount * 1);
+        const maxMarks = parseInt(totalQuestions) * 4; // Maximum possible marks
         
         const result = await saveTestResult({
             test_id: parseInt(testId),
             student_id: user.id || 1,
             student_name: user.name || 'Student',
             score: parseFloat(score),
-            correct_answers: parseInt(correctAnswers),
+            correct_answers: correctCount,
             total_questions: parseInt(totalQuestions),
             time_taken: parseInt(timeTaken),
-            answers: JSON.stringify(answers)
+            answers: JSON.stringify(answers),
+            numerical_score: numericalScore,
+            wrong_answers: wrongCount,
+            max_marks: maxMarks
         });
         
         const resultId = Number(result.lastInsertRowid);

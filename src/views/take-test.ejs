@@ -427,6 +427,7 @@
             
             // Calculate score
             let correctAnswers = 0;
+            let wrongAnswers = 0;
             testData.questions.forEach((question, index) => {
                 const userAnswer = userAnswers[index];
                 if (userAnswer !== null) {
@@ -434,6 +435,8 @@
                     const correctIndex = question.options.indexOf(correctOption);
                     if (userAnswer === correctIndex) {
                         correctAnswers++;
+                    } else {
+                        wrongAnswers++;
                     }
                 }
             });
@@ -454,6 +457,7 @@
                         timeTaken: timeTaken,
                         score: parseFloat(score),
                         correctAnswers: correctAnswers,
+                        wrongAnswers: wrongAnswers,
                         totalQuestions: testData.questions.length
                     })
                 });

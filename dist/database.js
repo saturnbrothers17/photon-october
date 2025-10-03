@@ -413,8 +413,20 @@ async function getTestWithQuestions(testId) {
 async function saveTestResult(resultData) {
     try {
         const result = await client.execute({
-            sql: 'INSERT INTO test_results (test_id, student_id, student_name, score, correct_answers, total_questions, time_taken, answers) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-            args: [resultData.test_id, resultData.student_id, resultData.student_name, resultData.score, resultData.correct_answers, resultData.total_questions, resultData.time_taken, resultData.answers]
+            sql: 'INSERT INTO test_results (test_id, student_id, student_name, score, correct_answers, total_questions, time_taken, answers, numerical_score, wrong_answers, max_marks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            args: [
+                resultData.test_id,
+                resultData.student_id,
+                resultData.student_name,
+                resultData.score,
+                resultData.correct_answers,
+                resultData.total_questions,
+                resultData.time_taken,
+                resultData.answers,
+                resultData.numerical_score || 0,
+                resultData.wrong_answers || 0,
+                resultData.max_marks || 0
+            ]
         });
         return result;
     }
