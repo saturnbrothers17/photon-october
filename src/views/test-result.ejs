@@ -233,7 +233,7 @@
                                             class="ai-solution-btn px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-bold hover:scale-105 transition-all"
                                             data-question-index="<%= index %>"
                                             data-question-text="<%= question.question_text.replace(/"/g, '&quot;') %>"
-                                            data-options='<%= JSON.stringify(question.options.map(o => o.option_text)).replace(/'/g, "\\'") %>'
+                                            data-options-json="<%= Buffer.from(JSON.stringify(question.options.map(o => o.option_text))).toString('base64') %>"
                                             data-correct-answer="<%= correctIndex %>"
                                             data-user-answer="<%= userAnswer %>">
                                             <i class="fas fa-robot mr-2"></i> Niko Solution
@@ -317,7 +317,7 @@
             btn.addEventListener('click', async function() {
                 const questionIndex = this.dataset.questionIndex;
                 const questionText = this.dataset.questionText;
-                const options = JSON.parse(this.dataset.options);
+                const options = JSON.parse(atob(this.dataset.optionsJson));
                 const correctAnswer = parseInt(this.dataset.correctAnswer);
                 const userAnswer = this.dataset.userAnswer === 'null' ? null : parseInt(this.dataset.userAnswer);
                 
