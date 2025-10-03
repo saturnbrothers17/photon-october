@@ -642,20 +642,25 @@ export async function getTestsWithStatus() {
             ORDER BY created_at DESC
         `);
         
-        // Calculate status in JavaScript to handle timezones correctly
+        // Calculate status in JavaScript with proper timezone handling
         const testsWithStatus = result.rows.map((test: any) => {
             let status = 'available';
             
             if (test.start_time && test.end_time) {
+                // Get current time in IST (UTC+5:30)
                 const now = new Date();
+                const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC+5:30
+                const nowIST = new Date(now.getTime() + (now.getTimezoneOffset() * 60 * 1000) + istOffset);
+                
+                // Parse times as IST
                 const startTime = new Date(test.start_time);
                 const endTime = new Date(test.end_time);
                 
-                if (now < startTime) {
+                if (nowIST < startTime) {
                     status = 'scheduled';
-                } else if (now >= startTime && now <= endTime) {
+                } else if (nowIST >= startTime && nowIST <= endTime) {
                     status = 'live';
-                } else if (now > endTime) {
+                } else if (nowIST > endTime) {
                     status = 'ended';
                 }
             }
